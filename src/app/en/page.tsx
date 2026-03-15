@@ -20,101 +20,140 @@ export default async function EnBuyerHomePage() {
     <>
       <Nav lang="en" />
 
-      {/* Hero — buyer focused */}
-      <section className="bg-gradient-to-br from-[#0d1f12] via-[#1a3d2b] to-[#2d5a3d] text-white py-24 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="text-[#7ecfa0] text-sm font-medium tracking-widest uppercase mb-4">
-            For International Buyers
-          </p>
-          <h1 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">
-            Buy a Japanese house<br />
-            <span className="text-[#7ecfa0]">under $50,000.</span>
-          </h1>
-          <p className="text-lg text-white/75 mb-4 max-w-2xl mx-auto leading-relaxed">
-            Japan has 9 million vacant homes — and they're astonishingly affordable.<br />
-            All listings translated to English. Direct contact with owners. No agent fees.
-          </p>
-          <p className="text-sm text-white/50 mb-8">
-            🇺🇸 🇬🇧 🇦🇺 🇨🇦 Foreigners can legally purchase property in Japan
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/en/akiya"
-              className="bg-[#7ecfa0] hover:bg-[#5bb882] text-[#0d1f12] font-bold px-10 py-4 rounded-xl transition text-lg"
-            >
-              🔍 Browse Properties
-            </Link>
-          </div>
-
-          <div className="mt-8 border-t border-white/10 pt-8">
-            <Link href="/" className="text-white/40 text-sm hover:text-white/60 transition">
-              🇯🇵 物件を売りたい方はこちら（日本語）→
-            </Link>
-          </div>
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-[#050f08] text-white min-h-[85vh] flex items-center">
+        {/* Background layers */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#050f08] via-[#0a1f12] to-[#05100a]" />
+          {/* Warm amber accent glow */}
+          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#2d5a3d]/25 rounded-full blur-3xl translate-x-1/3 -translate-y-1/4" />
+          {/* Deep green glow left */}
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#5a3e18]/10 rounded-full blur-3xl -translate-x-1/4 translate-y-1/4" />
+          {/* Gold accent point */}
+          <div className="absolute top-1/2 left-1/3 w-[300px] h-[300px] bg-[#c9a96e]/5 rounded-full blur-2xl" />
+          {/* Grid overlay */}
+          <svg className="absolute inset-0 w-full h-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="grid-en" width="80" height="80" patternUnits="userSpaceOnUse">
+                <path d="M 80 0 L 0 0 0 80" fill="none" stroke="white" strokeWidth="0.5"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid-en)" />
+          </svg>
         </div>
-      </section>
 
-      {/* Social proof / key stats */}
-      <section className="bg-[#f0f7f2] py-10 border-b border-[#c8e0d0]">
-        <div className="max-w-3xl mx-auto px-4 grid grid-cols-3 gap-6 text-center">
-          {[
-            { icon: '🏘️', value: '9,000,000+', label: 'Vacant homes in Japan' },
-            { icon: '💵', value: 'From $3,000', label: 'Entry-level properties' },
-            { icon: '🌿', value: '47 Prefectures', label: 'Listings nationwide' },
-          ].map((s) => (
-            <div key={s.label}>
-              <div className="text-3xl mb-1">{s.icon}</div>
-              <div className="font-bold text-[#1a3d2b] text-lg">{s.value}</div>
-              <div className="text-[#6a9a78] text-xs">{s.label}</div>
+        <div className="relative max-w-5xl mx-auto px-6 py-24 w-full">
+          <div className="max-w-3xl">
+            {/* Eyebrow */}
+            <div className="flex items-center gap-3 mb-8">
+              <div className="h-px w-8 bg-[#7ecfa0]" />
+              <p className="text-[#7ecfa0] text-xs font-medium tracking-[0.2em] uppercase">
+                For International Buyers
+              </p>
             </div>
-          ))}
+
+            {/* Headline */}
+            <h1 className="font-serif text-5xl md:text-6xl font-bold leading-[1.1] mb-6">
+              Own a piece of Japan
+              <br />
+              <span className="text-[#7ecfa0]">from $3,000.</span>
+            </h1>
+
+            <p className="text-white/60 text-lg leading-relaxed mb-4 max-w-xl">
+              Japan has 9 million vacant homes — and they're astonishingly affordable.
+              All listings translated to English. Direct contact with owners. No agent fees.
+            </p>
+            <p className="text-[#7ecfa0]/70 text-sm mb-10">
+              🇺🇸 🇬🇧 🇦🇺 🇨🇦 &nbsp; Foreigners can legally purchase property in Japan — no restrictions.
+            </p>
+
+            {/* CTA */}
+            <div className="flex flex-col sm:flex-row gap-4 items-start">
+              <Link
+                href="/en/akiya"
+                className="group inline-flex items-center gap-2 bg-[#7ecfa0] hover:bg-[#5bb882] text-[#050f08] font-bold px-8 py-4 rounded-xl transition-all text-base shadow-lg shadow-[#7ecfa0]/20 hover:shadow-[#7ecfa0]/30 hover:scale-[1.02]"
+              >
+                Browse Properties
+                <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+              <Link href="/" className="text-white/40 text-sm self-center hover:text-white/70 transition">
+                🇯🇵 物件を売りたい方はこちら（日本語）
+              </Link>
+            </div>
+
+            {/* Stats */}
+            <div className="flex items-center gap-8 mt-14 pt-10 border-t border-white/5">
+              {[
+                { value: '9,000,000+', label: 'Vacant homes in Japan' },
+                { value: 'From $3,000', label: 'Entry-level properties' },
+                { value: '47', label: 'Prefectures covered' },
+              ].map((s) => (
+                <div key={s.label}>
+                  <p className="text-2xl font-bold text-white">{s.value}</p>
+                  <p className="text-white/40 text-xs mt-0.5">{s.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Why buy in Japan */}
-      <section className="max-w-4xl mx-auto px-4 py-16">
-        <h2 className="text-2xl font-bold text-center text-[#1a3d2b] mb-10">Why Buy in Japan?</h2>
+      <section className="max-w-5xl mx-auto px-6 py-20">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="h-px w-6 bg-[#7ecfa0]" />
+          <p className="text-[#7ecfa0] text-xs tracking-widest uppercase">Why Japan</p>
+        </div>
+        <h2 className="font-serif text-3xl font-bold text-[#1a0e06] mb-12">
+          Why Buy in Japan?
+        </h2>
         <div className="grid md:grid-cols-3 gap-6">
           {[
             {
-              icon: '💰',
+              num: '01',
               title: 'Shockingly Affordable',
-              desc: 'Traditional homes from as low as ¥500,000 (~$3,000 USD). Rural areas have near-zero prices.',
+              desc: 'Traditional homes from as low as ¥500,000 (~$3,000 USD). Rural areas have near-zero land prices with livable structures.',
             },
             {
-              icon: '🏯',
+              num: '02',
               title: 'Own a Piece of History',
               desc: 'Ancient kominka farmhouses, machiya townhouses, and mountain retreats. Architecture you can\'t find anywhere else.',
             },
             {
-              icon: '🌿',
-              title: 'Countryside Escape',
-              desc: 'Many municipalities offer relocation subsidies up to ¥1,000,000 for foreign buyers who move in.',
+              num: '03',
+              title: 'Municipality Subsidies',
+              desc: 'Many towns offer relocation subsidies up to ¥1,000,000 for foreign buyers who move in and revitalize the community.',
             },
           ].map((item) => (
-            <div key={item.title} className="bg-white border border-stone-200 rounded-xl p-6 shadow-sm">
-              <div className="text-3xl mb-3">{item.icon}</div>
-              <h3 className="font-bold text-[#1a3d2b] mb-2">{item.title}</h3>
-              <p className="text-sm text-[#6a9a78] leading-relaxed">{item.desc}</p>
+            <div key={item.num} className="group relative p-6 rounded-2xl border border-[#e2d8cc] hover:border-[#7ecfa0]/50 bg-white hover:shadow-card transition-all">
+              <p className="font-serif text-5xl font-bold text-[#e2d8cc] group-hover:text-[#7ecfa0]/30 transition-colors mb-4 leading-none">
+                {item.num}
+              </p>
+              <h3 className="font-serif font-bold text-[#1a0e06] mb-2 text-lg">{item.title}</h3>
+              <p className="text-sm text-[#8a7a68] leading-relaxed">{item.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Latest listings */}
-      <section className="bg-[#f0f7f2] py-16">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl font-bold text-[#1a3d2b] mb-2">Latest Listings</h2>
-            <p className="text-[#6a9a78]">Traditional Japanese properties — all listings in English</p>
+      <section className="bg-[#f5f0e8] border-y border-[#e2d8cc] py-20">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="h-px w-6 bg-[#7ecfa0]" />
+            <p className="text-[#7ecfa0] text-xs tracking-widest uppercase">Listings</p>
           </div>
+          <h2 className="font-serif text-3xl font-bold text-[#1a0e06] mb-10">
+            Latest Properties
+          </h2>
 
           {properties.length === 0 ? (
-            <div className="text-center py-20 text-[#6a9a78]">
-              <div className="text-5xl mb-4">🏡</div>
-              <p className="text-lg mb-2">Listings coming soon</p>
-              <p className="text-sm">We're adding properties across Japan</p>
+            <div className="text-center py-20">
+              <p className="font-serif text-4xl text-[#e2d8cc] mb-4">家</p>
+              <p className="text-[#8a7a68] text-lg mb-1">Listings coming soon</p>
+              <p className="text-sm text-[#8a7a68]/60">We're adding properties across Japan</p>
             </div>
           ) : (
             <>
@@ -124,7 +163,10 @@ export default async function EnBuyerHomePage() {
                 ))}
               </div>
               <div className="text-center mt-10">
-                <Link href="/en/akiya" className="bg-[#2d5a3d] text-white px-8 py-3 rounded-xl font-bold hover:bg-[#1a3d2b] transition inline-block">
+                <Link
+                  href="/en/akiya"
+                  className="inline-flex items-center gap-2 bg-[#1a3d2b] text-white font-bold px-10 py-4 rounded-xl hover:bg-[#0a1f12] transition shadow-lg hover:shadow-xl hover:scale-[1.02]"
+                >
                   View All Properties →
                 </Link>
               </div>
@@ -133,10 +175,16 @@ export default async function EnBuyerHomePage() {
         </div>
       </section>
 
-      {/* FAQ for foreign buyers */}
-      <section className="max-w-3xl mx-auto px-4 py-16">
-        <h2 className="text-2xl font-bold text-[#1a3d2b] text-center mb-8">FAQ for Foreign Buyers</h2>
-        <div className="space-y-4">
+      {/* FAQ */}
+      <section className="max-w-3xl mx-auto px-6 py-20">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="h-px w-6 bg-[#7ecfa0]" />
+          <p className="text-[#7ecfa0] text-xs tracking-widest uppercase">FAQ</p>
+        </div>
+        <h2 className="font-serif text-3xl font-bold text-[#1a0e06] mb-10">
+          FAQ for Foreign Buyers
+        </h2>
+        <div className="space-y-3">
           {[
             {
               q: 'Can foreigners buy property in Japan?',
@@ -155,9 +203,9 @@ export default async function EnBuyerHomePage() {
               a: 'A kominka is a traditional Japanese farmhouse, often 50–150+ years old. They feature wooden beams, tatami floors, and engawa verandahs.',
             },
           ].map((item) => (
-            <div key={item.q} className="border border-[#c8e0d0] rounded-xl p-5 bg-white">
-              <p className="font-bold text-[#1a3d2b] mb-1">Q. {item.q}</p>
-              <p className="text-sm text-[#6a9a78]">A. {item.a}</p>
+            <div key={item.q} className="border border-[#e2d8cc] rounded-xl p-5 hover:border-[#7ecfa0]/40 transition bg-white">
+              <p className="font-semibold text-[#1a0e06] mb-1.5">Q. {item.q}</p>
+              <p className="text-sm text-[#8a7a68]">A. {item.a}</p>
             </div>
           ))}
         </div>
