@@ -19,7 +19,9 @@ export function PropertyCard({ p, lang = 'ja' }: { p: Property; lang?: 'ja' | 'e
           <h3 className="font-bold text-[#2c2416] text-sm leading-snug line-clamp-2 flex-1">{title}</h3>
           {p.price && (
             <span className="text-[#5a3e18] font-bold text-sm whitespace-nowrap">
-              {p.price.toLocaleString()}{isEn ? '万¥' : '万円'}
+              {isEn
+                ? `$${Math.round(p.price * 10000 / 150).toLocaleString()}`
+                : `${p.price.toLocaleString()}万円`}
             </span>
           )}
         </div>
