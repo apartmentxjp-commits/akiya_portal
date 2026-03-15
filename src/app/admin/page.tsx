@@ -9,6 +9,7 @@ export default function AdminPage() {
   const [filter, setFilter] = useState<'pending' | 'approved' | 'rejected'>('pending')
   const [loading, setLoading] = useState(true)
   const [translating, setTranslating] = useState<string | null>(null)
+  const [enhancing, setEnhancing] = useState<string | null>(null)
 
   const load = async (status: typeof filter) => {
     setLoading(true)
@@ -23,9 +24,42 @@ export default function AdminPage() {
 
   useEffect(() => { load(filter) }, [filter])
 
+  const enhance = async (p: Property) => {
+    setEnhancing(p.id)
+    try {
+      const res = await fetch('/api/enhance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: p.id,
+          title: p.title,
+          description: p.description,
+          prefecture: p.prefecture,
+          city: p.city,
+          year_built: p.year_built,
+          building_area: p.building_area,
+          property_type: p.property_type,
+        }),
+      })
+      const { tags, slug } = await res.json()
+      await supabase.from('properties').update({ tags, slug }).eq('id', p.id)
+      setProperties((prev) =>
+        prev.map((item) => item.id === p.id ? { ...item, tags, slug } : item)
+      )
+    } catch (e) {
+      alert('AI強化エラー')
+    } finally {
+      setEnhancing(null)
+    }
+  }
+
   const updateStatus = async (id: string, status: 'approved' | 'rejected') => {
+    const p = properties.find((x) => x.id === id)
     await supabase.from('properties').update({ status }).eq('id', id)
-    setProperties((prev) => prev.filter((p) => p.id !== id))
+    setProperties((prev) => prev.filter((item) => item.id !== id))
+    if (status === 'approved' && p && (!p.tags || p.tags.length === 0)) {
+      enhance({ ...p, status: 'approved' })
+    }
   }
 
   const generateTranslation = async (p: Property) => {
@@ -63,10 +97,14 @@ export default function AdminPage() {
           <h1 className="text-2xl font-bold text-[#2c2416]">🏯 管理画面</h1>
           <p className="text-[#8a7a68] text-sm">Akiya Japan — 物件審査・翻訳管理</p>
         </div>
-        <a href="/" className="text-sm text-[#8a7a68] hover:text-[#5a3e18]">← サイトへ</a>
+        <div className="flex gap-3">
+          <a href="/agent/upload" className="text-sm bg-[#4a7c59] text-white px-3 py-1.5 rounded-lg hover:bg-[#3a6449] transition">
+            📋 CSV一括登録
+          </a>
+          <a href="/" className="text-sm text-[#8a7a68] hover:text-[#5a3e18]">← サイトへ</a>
+        </div>
       </div>
 
-      {/* Tabs */}
       <div className="flex gap-2 mb-6">
         {(['pending', 'approved', 'rejected'] as const).map((s) => (
           <button
@@ -96,7 +134,10 @@ export default function AdminPage() {
             <div key={p.id} className="bg-white border border-stone-200 rounded-xl p-6">
               <div className="flex items-start justify-between gap-4 mb-4">
                 <div className="flex-1">
-                  <h3 className="font-bold text-[#2c2416] mb-1">{p.title}</h3>
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="font-bold text-[#2c2416]">{p.title}</h3>
+                    <span className="text-xs bg-stone-100 text-[#8a7a68] px-2 py-0.5 rounded">{p.source || 'owner'}</span>
+                  </div>
                   {p.title_en && (
                     <p className="text-sm text-[#4a7c59] italic mb-1">EN: {p.title_en}</p>
                   )}
@@ -107,6 +148,15 @@ export default function AdminPage() {
                     {p.year_built && ` | 築${new Date().getFullYear() - p.year_built}年`}
                   </p>
                   <p className="text-[#8a7a68] text-xs mt-1">📧 {p.contact_email}</p>
+                  {p.tags && p.tags.length > 0 && (
+                    <div className="flex gap-1 flex-wrap mt-2">
+                      {p.tags.map((tag) => (
+                        <span key={tag} className="text-xs bg-[#f0f7f2] text-[#4a7c59] px-2 py-0.5 rounded-full border border-[#c8e0d0]">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <span className="text-xs text-[#8a7a68] whitespace-nowrap">
                   {new Date(p.created_at).toLocaleDateString('ja-JP')}
@@ -150,6 +200,16 @@ export default function AdminPage() {
                     className="border border-[#4a7c59] text-[#4a7c59] px-4 py-1.5 rounded-lg text-sm hover:bg-[#4a7c59] hover:text-white transition disabled:opacity-50"
                   >
                     {translating === p.id ? '翻訳中...' : '🌏 英訳生成'}
+                  </button>
+                )}
+
+                {(!p.tags || p.tags.length === 0) && (
+                  <button
+                    onClick={() => enhance(p)}
+                    disabled={enhancing === p.id}
+                    className="border border-[#5a3e18] text-[#5a3e18] px-4 py-1.5 rounded-lg text-sm hover:bg-[#5a3e18] hover:text-white transition disabled:opacity-50"
+                  >
+                    {enhancing === p.id ? 'AI処理中...' : '🤖 AIタグ生成'}
                   </button>
                 )}
 
