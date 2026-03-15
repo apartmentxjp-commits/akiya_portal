@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --earth: #5a3e18;
+  --earth-light: #c9a96e;
+  --moss: #4a7c59;
+  --paper: #faf8f4;
+}
+
+body {
+  background: var(--paper);
+  font-family: 'Hiragino Sans', 'Yu Gothic', 'Meiryo', sans-serif;
+}
+
+.prose h2 {
+  @apply text-xl font-bold mt-8 mb-3 text-ink;
+  border-left: 4px solid #5a3e18;
+  padding-left: 12px;
+}
+.prose h3 { @apply text-lg font-semibold mt-6 mb-2 text-ink; }
+.prose p { @apply mb-4 leading-relaxed; }
+.prose ul { @apply list-disc list-inside mb-4 space-y-1; }
