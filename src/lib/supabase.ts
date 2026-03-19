@@ -5,6 +5,22 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
+/**
+ * Fields returned for ALL public-facing property queries.
+ * `address` (full street / lot address) is intentionally excluded.
+ * Location display is limited to prefecture + city (都道府県・市区町村)
+ * across all public pages — both Japanese and English.
+ */
+export const PUBLIC_PROPERTY_FIELDS = [
+  'id', 'title', 'title_en', 'price',
+  'prefecture', 'city',
+  // `address` deliberately omitted from all public queries
+  'land_area', 'building_area', 'year_built', 'property_type',
+  'description', 'description_en',
+  'images', 'tags', 'slug', 'source', 'status',
+  'contact_email', 'created_at', 'updated_at',
+].join(', ')
+
 export type Property = {
   id: string
   title: string
@@ -12,7 +28,7 @@ export type Property = {
   price: number | null
   prefecture: string
   city: string
-  address: string | null
+  address: string | null  // stored in DB; never fetched by public pages
   land_area: number | null
   building_area: number | null
   year_built: number | null
