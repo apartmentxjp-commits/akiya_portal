@@ -15,7 +15,7 @@ export function Nav({ lang = 'ja' }: { lang?: 'ja' | 'en' }) {
           <div className="leading-none">
             <p className="text-white font-semibold text-sm tracking-wide">Akiya Japan</p>
             <p className="text-[#c9a96e]/70 text-[10px] tracking-widest uppercase mt-0.5">
-              {isEn ? 'Traditional Houses' : '空き家マーケット'}
+              {isEn ? 'Property Data Library' : '空き家データライブラリ'}
             </p>
           </div>
         </Link>
@@ -26,14 +26,22 @@ export function Nav({ lang = 'ja' }: { lang?: 'ja' | 'en' }) {
             href={isEn ? '/en/akiya' : '/akiya'}
             className="px-3 py-2 text-white/70 hover:text-white transition rounded-md hover:bg-white/5"
           >
-            {isEn ? 'Browse' : '物件一覧'}
+            {isEn ? 'Browse Data' : 'データ一覧'}
           </Link>
           <Link
             href="/submit"
             className="px-3 py-2 text-white/70 hover:text-white transition rounded-md hover:bg-white/5"
           >
-            {isEn ? 'List Free' : '無料掲載'}
+            {isEn ? 'Register Data' : 'データ登録'}
           </Link>
+          {isEn && (
+            <Link
+              href="/en/subscribe"
+              className="px-3 py-2 text-[#7ecfa0] hover:text-white transition rounded-md hover:bg-white/5"
+            >
+              Full Access
+            </Link>
+          )}
           <Link
             href={isEn ? '/' : '/en'}
             className="ml-2 px-3 py-1.5 text-[#c9a96e] border border-[#c9a96e]/40 rounded-md text-xs hover:bg-[#c9a96e]/10 transition tracking-wide"
@@ -56,35 +64,53 @@ export function Footer({ lang = 'ja' }: { lang?: 'ja' | 'en' }) {
             <p className="text-white/80 font-semibold mb-1 flex items-center gap-2">
               <span className="text-[#c9a96e]">家</span> Akiya Japan
             </p>
-            <p className="text-sm max-w-xs">
+            <p className="text-sm max-w-xs mb-3">
               {isEn
-                ? 'Connecting traditional Japanese homes with international buyers.'
-                : '日本の空き家・古民家を世界のバイヤーへ届けるマーケットプレイス。'}
+                ? 'A structured data library of vacant homes across Japan.'
+                : '日本全国の空き家・古民家情報を集めたデータライブラリ。'}
             </p>
           </div>
           <div className="flex gap-8 text-sm">
             <div>
               <p className="text-white/60 mb-2 text-xs uppercase tracking-wider">
-                {isEn ? 'For Buyers' : 'バイヤーの方'}
+                {isEn ? 'Data Access' : 'データを見る'}
               </p>
               <ul className="space-y-1">
-                <li><Link href="/en/akiya" className="hover:text-white/80 transition">Browse Properties</Link></li>
-                <li><Link href="/en" className="hover:text-white/80 transition">English Site</Link></li>
+                <li><Link href="/en/akiya" className="hover:text-white/80 transition">{isEn ? 'Browse Database' : 'データ一覧'}</Link></li>
+                <li><Link href="/en/subscribe" className="hover:text-white/80 transition">{isEn ? 'Full Access Plan' : 'フルアクセス'}</Link></li>
               </ul>
             </div>
             <div>
               <p className="text-white/60 mb-2 text-xs uppercase tracking-wider">
-                {isEn ? 'For Sellers' : '売主の方'}
+                {isEn ? 'Register Data' : 'データを登録'}
               </p>
               <ul className="space-y-1">
-                <li><Link href="/submit" className="hover:text-white/80 transition">{isEn ? 'List Free' : '無料掲載'}</Link></li>
+                <li><Link href="/submit" className="hover:text-white/80 transition">{isEn ? 'Free Registration' : '無料登録'}</Link></li>
                 <li><Link href="/agent/upload" className="hover:text-white/80 transition">{isEn ? 'Bulk Upload' : 'CSV一括登録'}</Link></li>
               </ul>
             </div>
           </div>
         </div>
-        <div className="border-t border-white/5 pt-6 text-xs text-center">
-          &copy; {new Date().getFullYear()} Akiya Japan · akiya.tacky-consulting.com
+
+        {/* Legal links */}
+        {isEn && (
+          <div className="flex gap-4 text-xs text-white/30 mb-4">
+            <Link href="/en/about" className="hover:text-white/60 transition">About</Link>
+            <Link href="/en/privacy" className="hover:text-white/60 transition">Privacy Policy</Link>
+            <Link href="/en/terms" className="hover:text-white/60 transition">Terms of Service</Link>
+          </div>
+        )}
+
+        {/* Legal disclaimer */}
+        <div className="border-t border-white/5 pt-6 space-y-2">
+          <p className="text-[10px] text-white/30 leading-relaxed max-w-3xl">
+            {isEn
+              ? 'This service is operated through advertising and data-based services. This website is for informational purposes only. We do not provide real estate brokerage, agency, or advisory services. All decisions are made at the user\'s own responsibility.'
+              : '本サービスは広告掲載およびデータ提供により運営されています。本サイトは情報提供を目的としており、不動産の売買・仲介・代理・勧誘等は行っておりません。掲載情報の正確性を保証するものではなく、最終判断は利用者ご自身の責任で行ってください。'}
+          </p>
+          <p className="text-xs text-center text-white/20 mt-4">
+            &copy; {new Date().getFullYear()} Akiya Japan · akiya.tacky-consulting.com
+          </p>
         </div>
       </div>
     </footer>

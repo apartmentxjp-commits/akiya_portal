@@ -91,6 +91,50 @@ export default async function EnHomePage() {
         </div>
       </section>
 
+      {/* Why this database exists ───────────────────────────────────────── */}
+      <section className="bg-[#f5f0e8] border-y border-[#e2d8cc] py-16">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="h-px w-6 bg-[#7ecfa0]" />
+            <p className="text-[#7ecfa0] text-xs tracking-widest uppercase">Background</p>
+          </div>
+          <h2 className="font-serif text-3xl font-bold text-[#1a0e06] mb-10">
+            Japan&apos;s Vacant Home Crisis — In Numbers
+          </h2>
+          <div className="grid md:grid-cols-3 gap-6 mb-10">
+            {[
+              {
+                stat: '9,000,000+',
+                label: 'Vacant homes in Japan',
+                note: 'As of the 2023 Housing & Land Survey (Ministry of Internal Affairs)',
+              },
+              {
+                stat: '13.8%',
+                label: 'Of all housing stock',
+                note: 'Japan\'s vacancy rate is among the highest of any developed nation',
+              },
+              {
+                stat: '47',
+                label: 'Prefectures covered',
+                note: 'Our database aggregates data from municipal akiya bank programs nationwide',
+              },
+            ].map((item) => (
+              <div key={item.stat} className="bg-white rounded-2xl border border-[#e2d8cc] p-6">
+                <p className="font-serif text-4xl font-bold text-[#1a3d2b] mb-1">{item.stat}</p>
+                <p className="font-semibold text-[#1a0e06] text-sm mb-2">{item.label}</p>
+                <p className="text-xs text-[#8a7a68] leading-relaxed">{item.note}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-sm text-[#8a7a68] leading-relaxed max-w-2xl">
+            Despite this scale, most of Japan&apos;s vacant property inventory is invisible to international audiences —
+            scattered across local government websites, available only in Japanese.
+            Japan Property Data Library collects, translates, and structures this data into a single
+            English-language resource for researchers, investors, and buyers worldwide.
+          </p>
+        </div>
+      </section>
+
       {/* What this database contains ─────────────────────────────────────── */}
       <section className="max-w-5xl mx-auto px-6 py-20">
         <div className="flex items-center gap-3 mb-3">
