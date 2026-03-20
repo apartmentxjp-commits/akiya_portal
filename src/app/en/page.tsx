@@ -41,12 +41,12 @@ function locationEn(prefecture: string, city?: string): string {
 // Placeholder properties with real Unsplash photos (shown when DB has no images)
 const SAMPLE_PROPS = [
   { loc: 'Kameoka, Kyoto',    price: '$18,667', photo: 'photo-1528360983277-13d401cdc186' },
-  { loc: 'Azumino, Nagano',   price: '$10,000', photo: 'photo-1545569341-9eb8b30979d9' },
+  { loc: 'Azumino, Nagano',   price: '$10,000', photo: 'photo-1493780474015-ba834fd0ce2f' },
   { loc: 'Karuizawa, Nagano', price: '$42,000', photo: 'photo-1480796927426-f609979314bd' },
-  { loc: 'Iiyama, Nagano',    price: '$14,000', photo: 'photo-1490806843957-31f4c9a91c65' },
-  { loc: 'Unnan, Shimane',    price: '$8,000',  photo: 'photo-1542051841857-5f90071e7989' },
+  { loc: 'Iiyama, Nagano',    price: '$14,000', photo: 'photo-1540959733332-eab4deabeeaf' },
+  { loc: 'Unnan, Shimane',    price: '$8,000',  photo: 'photo-1597149305654-c5bbd4e2bc6a' },
   { loc: 'Miyoshi, Tokushima',price: '$5,500',  photo: 'photo-1524413840807-0c3cb6fa808d' },
-  { loc: 'Daisen, Tottori',   price: '$22,000', photo: 'photo-1466442929976-97f336a657be' },
+  { loc: 'Daisen, Tottori',   price: '$22,000', photo: 'photo-1526481280693-3bfa7568e0f3' },
   { loc: 'Ojiya, Niigata',    price: '$6,500',  photo: 'photo-1578469645742-46cae010e5d4' },
 ]
 
