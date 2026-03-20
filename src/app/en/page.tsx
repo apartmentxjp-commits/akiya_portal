@@ -37,8 +37,8 @@ export default async function EnHomePage() {
         {/* Background photo */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1920&auto=format&fit=crop&q=80"
-          alt="Japanese village street"
+          src="https://images.unsplash.com/photo-1526481280693-3bfa7568e0f3?w=1920&auto=format&fit=crop&q=80"
+          alt="Traditional Japanese farmhouse village"
           className="absolute inset-0 w-full h-full object-cover"
         />
         {/* Dark overlay */}
