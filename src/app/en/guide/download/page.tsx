@@ -263,39 +263,31 @@ export default function GuideDownloadPage() {
             <h2 className="text-2xl font-bold text-stone-900 mb-4 border-l-4 border-[#e07070] pl-4">
               6. Finding the Right Property
             </h2>
-            <div className="space-y-3 mb-5">
-              {[
-                {
-                  source: 'Municipal Akiya Banks',
-                  desc: 'Each municipality maintains a database of vacant homes. Free to browse, but mostly in Japanese. Search "[city name] 空き家バンク" on Google.',
-                  tag: '✅ Free & Official',
-                },
-                {
-                  source: 'This Site (Akiya Japan)',
-                  desc: 'English-language listings sourced from municipal akiya banks across Japan. Subscribe for full contact details.',
-                  tag: '✅ English-friendly',
-                },
-                {
-                  source: 'SUUMO / HOME\'S',
-                  desc: 'Japan\'s largest real estate portals. Wide selection including akiya. Mostly Japanese. Use with Google Translate.',
-                  tag: '⚠️ Japanese only',
-                },
-                {
-                  source: 'Real Estate Agents',
-                  desc: 'Licensed agents (宅建業者) can access listings not published online. Some specialize in serving foreign clients.',
-                  tag: '✅ Most access',
-                },
-              ].map((s) => (
-                <div key={s.source} className="flex gap-4 bg-white border border-stone-200 rounded-xl p-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-1">
-                      <h4 className="font-bold text-stone-800 text-sm">{s.source}</h4>
-                      <span className="text-xs bg-stone-100 text-stone-600 px-2 py-0.5 rounded-full">{s.tag}</span>
-                    </div>
-                    <p className="text-sm text-stone-600">{s.desc}</p>
-                  </div>
-                </div>
-              ))}
+            <p className="text-stone-600 text-sm leading-relaxed mb-5">
+              The hard truth: most akiya are listed in Japanese only, scattered across hundreds of
+              municipal websites, with no central English-language database. That's the problem
+              Akiya Japan solves.
+            </p>
+            <div className="bg-[#e07070]/10 border border-[#e07070]/30 rounded-xl p-6 mb-5">
+              <h4 className="font-bold text-stone-800 mb-3">Why Akiya Japan exists</h4>
+              <ul className="space-y-3 text-sm text-stone-700">
+                <li className="flex gap-3">
+                  <span className="text-[#e07070] font-bold flex-shrink-0">→</span>
+                  <span>We monitor hundreds of municipal akiya banks and translate listings into English — saving you weeks of language-barrier frustration</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-[#e07070] font-bold flex-shrink-0">→</span>
+                  <span>Every listing includes the seller contact details, price history, and municipality notes — so you can act fast when the right property appears</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-[#e07070] font-bold flex-shrink-0">→</span>
+                  <span>New listings are added weekly as we roll through municipalities across Japan — the database grows continuously</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-[#e07070] font-bold flex-shrink-0">→</span>
+                  <span>Subscribe once, search everything. No per-listing fees, no hidden costs — just $7.99/month</span>
+                </li>
+              </ul>
             </div>
             <div className="bg-[#f9f9f9] border border-stone-200 rounded-xl p-5">
               <h4 className="font-bold text-stone-800 mb-2">Pro tips for property hunting</h4>
