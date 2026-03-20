@@ -31,6 +31,49 @@ const PROPERTY_TYPES = [
   { label: 'Villa 別荘',     value: 'villa' },
 ]
 
+// ── Japanese prefecture/city → English ────────────────────────────────────────
+const PREFECTURE_EN: Record<string, string> = {
+  '北海道':'Hokkaido','青森県':'Aomori','岩手県':'Iwate','宮城県':'Miyagi',
+  '秋田県':'Akita','山形県':'Yamagata','福島県':'Fukushima','茨城県':'Ibaraki',
+  '栃木県':'Tochigi','群馬県':'Gunma','埼玉県':'Saitama','千葉県':'Chiba',
+  '東京都':'Tokyo','神奈川県':'Kanagawa','新潟県':'Niigata','富山県':'Toyama',
+  '石川県':'Ishikawa','福井県':'Fukui','山梨県':'Yamanashi','長野県':'Nagano',
+  '岐阜県':'Gifu','静岡県':'Shizuoka','愛知県':'Aichi','三重県':'Mie',
+  '滋賀県':'Shiga','京都府':'Kyoto','大阪府':'Osaka','兵庫県':'Hyogo',
+  '奈良県':'Nara','和歌山県':'Wakayama','鳥取県':'Tottori','島根県':'Shimane',
+  '岡山県':'Okayama','広島県':'Hiroshima','山口県':'Yamaguchi','徳島県':'Tokushima',
+  '香川県':'Kagawa','愛媛県':'Ehime','高知県':'Kochi','福岡県':'Fukuoka',
+  '佐賀県':'Saga','長崎県':'Nagasaki','熊本県':'Kumamoto','大分県':'Oita',
+  '宮崎県':'Miyazaki','鹿児島県':'Kagoshima','沖縄県':'Okinawa',
+}
+
+const CITY_EN: Record<string, string> = {
+  '亀岡市':'Kameoka','安曇野市':'Azumino','軽井沢町':'Karuizawa','那須塩原市':'Nasu Shiobara',
+  '箱根町':'Hakone','日光市':'Nikko','富士河口湖町':'Fujikawaguchiko','高山市':'Takayama',
+  '白川村':'Shirakawa','飛騨市':'Hida','下呂市':'Gero','松本市':'Matsumoto',
+  '諏訪市':'Suwa','伊那市':'Ina','飯田市':'Iida','飯山市':'Iiyama',
+  '糸魚川市':'Itoigawa','妙高市':'Myoko','南砺市':'Nanto','小浜市':'Obama',
+  '大津市':'Otsu','彦根市':'Hikone','長浜市':'Nagahama','米原市':'Maibara',
+  '篠山市':'Sasayama','丹波篠山市':'Tanba Sasayama','豊岡市':'Toyooka','養父市':'Yabu',
+  '朝来市':'Asago','美作市':'Mimasaka','津山市':'Tsuyama','真庭市':'Maniwa',
+  '新見市':'Niimi','瀬戸内市':'Setouchi','倉吉市':'Kurayoshi','三朝町':'Misasa',
+  '雲南市':'Unnan','大田市':'Oda','出雲市':'Izumo','浜田市':'Hamada',
+  '益田市':'Masuda','萩市':'Hagi','周南市':'Shunan','山口市':'Yamaguchi',
+  '三好市':'Miyoshi','上勝町':'Kamikatsu','美馬市':'Mima','東みよし町':'Higashi Miyoshi',
+  '四万十市':'Shimanto','四万十町':'Shimanto','梼原町':'Yusuhara','仁淀川町':'Niyodogawa',
+  '津久見市':'Tsukumi','竹田市':'Taketa','九重町':'Kokonoe','玖珠町':'Kusu',
+  '阿蘇市':'Aso','南阿蘇村':'Minami Aso','球磨村':'Kuma','人吉市':'Hitoyoshi',
+  '天草市':'Amakusa','壱岐市':'Iki','対馬市':'Tsushima','五島市':'Goto',
+  '指宿市':'Ibusuki','霧島市':'Kirishima','南さつま市':'Minami Satsuma',
+}
+
+function locationEn(prefecture: string, city?: string): string {
+  const pref = PREFECTURE_EN[prefecture] || prefecture
+  if (!city) return pref
+  const cityEn = CITY_EN[city] || city.replace(/[市町村区郡]$/, '')
+  return `${cityEn}, ${pref}`
+}
+
 // Sample properties shown when DB is empty
 const SAMPLES = [
   { loc: 'Setouchi, Okayama', price: '$55,000', gradient: 'from-blue-900 via-teal-800 to-emerald-800', emoji: '🌊' },
@@ -204,7 +247,7 @@ export default async function EnAkiyaListPage({
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                     <div className="absolute bottom-0 left-0 right-0 p-3">
                       <p className="text-white font-bold text-sm">{priceUSD}</p>
-                      <p className="text-white/80 text-xs">{p.prefecture}{p.city ? `, ${p.city}` : ''}</p>
+                      <p className="text-white/80 text-xs">{locationEn(p.prefecture, p.city)}</p>
                     </div>
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                       <span className="bg-white text-stone-800 text-xs font-bold px-3 py-1.5 rounded-full">Subscribe to view details</span>
