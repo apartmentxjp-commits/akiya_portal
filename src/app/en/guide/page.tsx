@@ -1,83 +1,178 @@
-'use client'
-
-import { useState } from 'react'
 import { Nav, Footer } from '@/components/Nav'
 import Link from 'next/link'
 
-// The X post URL to like/repost (update this with your actual pinned post URL)
-const X_POST_URL = 'https://x.com/AkiyaJapan/status/1'
-const X_HANDLE = '@AkiyaJapan'
+export const metadata = {
+  title: 'Japan Guides & Ebooks | Akiya Japan',
+  description: 'Expert guides for living, buying, and exploring Japan. Written for foreign buyers and long-stay visitors.',
+}
 
-// Guide PDF URL (host this in /public or use a Google Drive link)
-const GUIDE_URL = '/en/guide/download'
+const GUIDES = [
+  {
+    slug: 'download',
+    emoji: '🏯',
+    color: 'from-stone-700 via-stone-600 to-stone-500',
+    badge: 'Bestseller',
+    badgeColor: 'bg-[#e07070] text-white',
+    title: 'How to Buy a House in Japan',
+    subtitle: 'The complete guide for foreign buyers',
+    desc: 'Step-by-step process, legal requirements, costs, due diligence, managing from abroad, and visa options. Everything you need to buy confidently.',
+    pages: '60+ pages',
+    price: 20,
+    annualFree: true,
+    chapters: ['Buying process (7 steps)', 'Full cost breakdown', 'Due diligence checklist', 'Visa & long-stay options', 'Managing from abroad'],
+  },
+  {
+    slug: 'regional',
+    emoji: '🗾',
+    color: 'from-emerald-700 via-emerald-600 to-teal-500',
+    badge: 'New',
+    badgeColor: 'bg-emerald-500 text-white',
+    title: 'Japan Regional Living Guide',
+    subtitle: 'Find the perfect prefecture for you',
+    desc: 'Deep-dives into 12 regions: climate, cost of living, community, internet access, nearest city, and what daily life actually looks like for foreign residents.',
+    pages: '80+ pages',
+    price: 15,
+    annualFree: false,
+    chapters: ['Tohoku highlands', 'Shinshu (Nagano)', 'San\'in coast', 'Shikoku countryside', 'Kyushu volcanic belt', '+ 7 more regions'],
+  },
+  {
+    slug: 'festivals',
+    emoji: '🎆',
+    color: 'from-violet-700 via-violet-600 to-purple-500',
+    badge: 'Popular',
+    badgeColor: 'bg-violet-500 text-white',
+    title: 'Japan Festival Calendar & Guide',
+    subtitle: '100+ matsuri across all 47 prefectures',
+    desc: 'Month-by-month guide to Japan\'s best festivals: Awa Odori, Gion Matsuri, Nebuta, Yuki Matsuri, cherry blossom spots, and hidden local celebrations.',
+    pages: '50+ pages',
+    price: 10,
+    annualFree: false,
+    chapters: ['Spring sakura festivals', 'Summer fireworks & Obon', 'Autumn harvest matsuri', 'Winter snow festivals', 'Regional hidden gems'],
+  },
+  {
+    slug: 'gourmet',
+    emoji: '🍜',
+    color: 'from-orange-700 via-orange-600 to-amber-500',
+    badge: 'Coming Soon',
+    badgeColor: 'bg-stone-400 text-white',
+    title: 'Japan Gourmet Guide',
+    subtitle: 'Regional cuisine, markets & food culture',
+    desc: 'From Kyoto kaiseki to Osaka street food, Hokkaido seafood to Okinawa champuru — a region-by-region guide to Japan\'s extraordinary food culture.',
+    pages: '70+ pages',
+    price: 12,
+    annualFree: false,
+    comingSoon: true,
+    chapters: ['Regional ramen styles', 'Local market guides', 'Izakaya etiquette', 'Seasonal ingredients', 'Food travel itineraries'],
+  },
+]
 
 export default function GuidePage() {
-  const [step, setStep] = useState<'info' | 'verify' | 'success'>('info')
-  const [xHandle, setXHandle] = useState('')
-  const [checked, setChecked] = useState(false)
-  const [error, setError] = useState('')
-
-  function handleUnlock() {
-    if (!xHandle.trim()) {
-      setError('Please enter your X username.')
-      return
-    }
-    if (!checked) {
-      setError('Please confirm you have liked and reposted.')
-      return
-    }
-    setError('')
-    setStep('success')
-  }
-
   return (
     <>
       <Nav lang="en" />
 
-      {/* Hero */}
-      <section className="relative h-[50vh] min-h-[400px] flex items-end overflow-hidden">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1920&auto=format&fit=crop&q=80"
-          alt="Japanese machiya street"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/50" />
-        <div className="relative max-w-6xl mx-auto px-6 pb-12 w-full">
-          <h1 className="text-5xl font-bold text-white leading-tight">
-            How To Buy A House<br />In Japan Guide
-          </h1>
+      {/* Header */}
+      <div className="bg-stone-900 py-14">
+        <div className="max-w-5xl mx-auto px-6 text-center">
+          <p className="text-[#e07070] text-sm font-bold uppercase tracking-wider mb-3">Guide Store</p>
+          <h1 className="text-4xl font-bold text-white mb-4">Japan Guides & Ebooks</h1>
+          <p className="text-stone-400 text-base max-w-xl mx-auto">
+            Expert-written guides for foreign buyers, long-stay visitors, and Japan enthusiasts.
+          </p>
+          <div className="mt-6 inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white text-sm px-4 py-2 rounded-full">
+            <span className="text-[#e07070] font-bold">★</span>
+            Annual subscribers get <strong>"How to Buy"</strong> free ($20 value) — plus full property access
+          </div>
         </div>
-      </section>
+      </div>
 
-      {/* Features */}
-      <section className="bg-white py-14">
+      {/* Guide grid */}
+      <section className="bg-[#f9f9f9] py-16">
         <div className="max-w-5xl mx-auto px-6">
-          <div className="grid md:grid-cols-3 gap-10">
-            {[
-              {
-                icon: '📋',
-                title: 'Step by step guide',
-                desc: 'This ebook guide takes you through the buying process step by step: from which documents you\'ll need, to what questions to ask the agent, all the way to managing the house from abroad.',
-              },
-              {
-                icon: '🏡',
-                title: 'Based on real research',
-                desc: 'This guide is based on hundreds of hours of research distilled into a single resource — Japanese books, municipal programs, expat forums, and expert interviews.',
-              },
-              {
-                icon: '🤝',
-                title: 'Real buyer experiences',
-                desc: 'Learn from the experiences of foreigners who have actually bought property in Japan. Their costs, unexpected challenges, and what they\'d do differently.',
-              },
-            ].map((f) => (
-              <div key={f.title} className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-[#e07070]/10 rounded-full flex items-center justify-center text-2xl">
-                  {f.icon}
+          <div className="grid md:grid-cols-2 gap-8">
+            {GUIDES.map((guide) => (
+              <div
+                key={guide.slug}
+                className={`bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm flex flex-col ${guide.comingSoon ? 'opacity-70' : ''}`}
+              >
+                {/* Cover mockup */}
+                <div className="flex justify-center pt-8 pb-4 bg-stone-50">
+                  <div className="bg-stone-900 rounded-[16px] p-2.5 shadow-xl w-36">
+                    <div className={`bg-gradient-to-br ${guide.color} rounded-[10px] aspect-[3/4] flex flex-col items-center justify-center p-4`}>
+                      <div className="text-4xl mb-2">{guide.emoji}</div>
+                      <p className="text-white font-bold text-[10px] text-center leading-tight mb-1">
+                        {guide.title.toUpperCase()}
+                      </p>
+                      <p className="text-white/50 text-[8px] text-center">Akiya Japan</p>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-bold text-stone-800 text-base mb-2">{f.title}</h3>
-                  <p className="text-stone-500 text-sm leading-relaxed">{f.desc}</p>
+
+                {/* Content */}
+                <div className="p-6 flex-1 flex flex-col">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${guide.badgeColor}`}>
+                      {guide.badge}
+                    </span>
+                    <span className="text-xs text-stone-400">{guide.pages}</span>
+                  </div>
+
+                  <h2 className="font-bold text-stone-900 text-lg leading-snug mb-1">{guide.title}</h2>
+                  <p className="text-xs text-stone-500 mb-3">{guide.subtitle}</p>
+                  <p className="text-sm text-stone-600 leading-relaxed mb-4">{guide.desc}</p>
+
+                  {/* Chapter list */}
+                  <ul className="space-y-1 mb-5">
+                    {guide.chapters.map((ch) => (
+                      <li key={ch} className="flex items-center gap-2 text-xs text-stone-500">
+                        <span className="text-[#e07070]">→</span>
+                        {ch}
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Price & CTA */}
+                  <div className="mt-auto">
+                    {guide.annualFree && (
+                      <div className="bg-[#e07070]/10 border border-[#e07070]/20 rounded-xl p-3 mb-3 text-center">
+                        <p className="text-xs text-stone-600">
+                          <span className="line-through text-stone-400 mr-1">${guide.price}</span>
+                          <span className="font-bold text-[#e07070]">Free with annual subscription ($79.99/yr)</span>
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <span className="text-2xl font-bold text-stone-900">${guide.price}</span>
+                        <span className="text-stone-400 text-sm ml-1">one-time</span>
+                      </div>
+                      {guide.comingSoon ? (
+                        <span className="text-sm text-stone-400 font-medium">Notify me →</span>
+                      ) : (
+                        <div className="flex gap-2">
+                          <Link
+                            href={`/en/guide/${guide.slug}`}
+                            className="text-sm text-stone-600 border border-stone-200 hover:border-stone-400 px-3 py-2 rounded-xl transition"
+                          >
+                            Preview
+                          </Link>
+                          {guide.annualFree ? (
+                            <Link
+                              href="/en/subscribe?plan=annual"
+                              className="bg-[#e07070] hover:bg-[#cc5c5c] text-white font-bold px-4 py-2 rounded-xl text-sm transition"
+                            >
+                              Get Free →
+                            </Link>
+                          ) : (
+                            <button className="bg-stone-900 hover:bg-stone-700 text-white font-bold px-4 py-2 rounded-xl text-sm transition">
+                              Buy ${guide.price} →
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
@@ -85,196 +180,28 @@ export default function GuidePage() {
         </div>
       </section>
 
-      {/* Main content */}
-      <section className="bg-[#f9f9f9] py-16">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
-
-            {/* Left: content */}
-            <div>
-              <h2 className="text-2xl font-bold text-stone-800 mb-6">
-                Want to own your own slice of Japan? Read this guide first.
-              </h2>
-              <p className="text-stone-600 text-sm leading-relaxed mb-5">
-                This guide is based on hundreds of hours of research about property purchasing
-                in Japan, and is designed to help any foreigner navigate the process from
-                start to finish — even without speaking Japanese.
-              </p>
-              <p className="text-sm font-bold text-stone-700 mb-3">The PDF ebook covers:</p>
-              <ul className="space-y-2 mb-8">
-                {[
-                  'How to find the best properties',
-                  'Analysis of the Japanese real estate market',
-                  'Step-by-step purchase process',
-                  'Common challenges and how to handle them',
-                  'Managing your property from overseas',
-                  'Japan visa and long-stay options',
-                  'What buying in Japan actually costs (all-in)',
-                  'How to buy without speaking Japanese',
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-2 text-sm text-stone-600">
-                    <span className="text-[#e07070] mt-0.5">•</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Right: unlock widget */}
-            <div>
-              {/* Ebook mockup */}
-              <div className="flex justify-center mb-8">
-                <div className="bg-stone-900 rounded-[20px] p-3 shadow-2xl w-48">
-                  <div className="bg-gradient-to-br from-stone-700 via-stone-600 to-stone-500 rounded-[14px] aspect-[3/4] flex flex-col items-center justify-center p-5">
-                    <div className="text-5xl mb-3">🏯</div>
-                    <p className="text-white font-bold text-sm text-center leading-snug mb-1">
-                      HOW TO BUY A<br />HOUSE IN JAPAN
-                    </p>
-                    <p className="text-white/50 text-[9px] text-center mt-2">Akiya Japan</p>
-                  </div>
-                  <div className="flex justify-center mt-2">
-                    <div className="w-6 h-1 bg-stone-600 rounded-full" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Unlock widget */}
-              {step === 'info' && (
-                <div className="bg-white border border-stone-200 rounded-2xl p-6 shadow-sm">
-                  <div className="text-center mb-5">
-                    <span className="inline-block bg-[#e07070]/10 text-[#e07070] text-xs font-bold px-3 py-1 rounded-full mb-3 uppercase tracking-wide">
-                      100% Free
-                    </span>
-                    <h3 className="font-bold text-stone-800 text-lg mb-2">Get the Guide Free</h3>
-                    <p className="text-stone-500 text-sm">
-                      Like and repost our pinned post on X — that&apos;s all it takes.
-                    </p>
-                  </div>
-
-                  <div className="bg-stone-50 border border-stone-200 rounded-xl p-4 mb-5">
-                    <p className="text-sm text-stone-600 mb-3 text-center">
-                      <strong>Step 1:</strong> Open our pinned post on X
-                    </p>
-                    <a
-                      href={X_POST_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 w-full bg-stone-900 hover:bg-stone-800 text-white font-bold py-3 px-5 rounded-xl text-sm transition"
-                    >
-                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                      </svg>
-                      Open {X_HANDLE} on X
-                    </a>
-                    <p className="text-xs text-stone-400 text-center mt-2">
-                      Like ❤️ and Repost 🔁 the pinned post
-                    </p>
-                  </div>
-
-                  <button
-                    onClick={() => setStep('verify')}
-                    className="w-full bg-[#e07070] hover:bg-[#cc5c5c] text-white font-bold py-3 px-5 rounded-xl text-sm uppercase tracking-wide transition"
-                  >
-                    I've Done It — Unlock Guide →
-                  </button>
-                </div>
-              )}
-
-              {step === 'verify' && (
-                <div className="bg-white border border-stone-200 rounded-2xl p-6 shadow-sm">
-                  <h3 className="font-bold text-stone-800 text-lg mb-4 text-center">
-                    <strong>Step 2:</strong> Confirm your X username
-                  </h3>
-
-                  <div className="space-y-4 mb-5">
-                    <div>
-                      <label className="text-xs font-bold text-stone-500 uppercase tracking-wide block mb-1">
-                        Your X Username
-                      </label>
-                      <input
-                        type="text"
-                        value={xHandle}
-                        onChange={(e) => setXHandle(e.target.value)}
-                        placeholder="@yourusername"
-                        className="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#e07070] focus:ring-2 focus:ring-[#e07070]/20 transition"
-                      />
-                    </div>
-
-                    <label className="flex items-start gap-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={checked}
-                        onChange={(e) => setChecked(e.target.checked)}
-                        className="mt-0.5 w-4 h-4 accent-[#e07070] flex-shrink-0"
-                      />
-                      <span className="text-sm text-stone-600">
-                        I confirm I have liked and reposted {X_HANDLE}&apos;s pinned post on X.
-                      </span>
-                    </label>
-                  </div>
-
-                  {error && (
-                    <p className="text-red-500 text-xs mb-3 text-center">{error}</p>
-                  )}
-
-                  <button
-                    onClick={handleUnlock}
-                    className="w-full bg-[#e07070] hover:bg-[#cc5c5c] text-white font-bold py-3 px-5 rounded-xl text-sm uppercase tracking-wide transition"
-                  >
-                    Get My Free Guide →
-                  </button>
-
-                  <button
-                    onClick={() => setStep('info')}
-                    className="w-full text-stone-400 hover:text-stone-600 text-xs mt-3 transition"
-                  >
-                    ← Go back
-                  </button>
-                </div>
-              )}
-
-              {step === 'success' && (
-                <div className="bg-white border border-stone-200 rounded-2xl p-6 shadow-sm text-center">
-                  <div className="text-5xl mb-4">🎉</div>
-                  <h3 className="font-bold text-stone-800 text-xl mb-2">Thank you!</h3>
-                  <p className="text-stone-600 text-sm mb-6">
-                    Your guide is ready. Click below to download the PDF.
-                  </p>
-                  <a
-                    href={GUIDE_URL}
-                    className="inline-block bg-[#e07070] hover:bg-[#cc5c5c] text-white font-bold px-8 py-3.5 rounded-xl text-sm uppercase tracking-wide transition shadow-md"
-                  >
-                    Download Guide PDF →
-                  </a>
-                  <p className="text-stone-400 text-xs mt-4">
-                    Thank you for supporting Akiya Japan on X! 🏯
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Sample pages teaser */}
-      <section className="bg-white py-14">
-        <div className="max-w-5xl mx-auto px-6 text-center">
-          <p className="text-stone-500 text-sm mb-4">
-            Ready to start looking at properties?
+      {/* Subscription upsell */}
+      <section className="bg-stone-900 py-14">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <h2 className="text-2xl font-bold text-white mb-3">Better value with a subscription</h2>
+          <p className="text-stone-400 text-sm mb-6 max-w-lg mx-auto">
+            The annual plan ($79.99/yr) includes the <strong className="text-white">How to Buy guide free</strong> ($20 value)
+            plus full property database access — 2 months free vs monthly billing.
           </p>
-          <Link
-            href="/en/akiya"
-            className="inline-block border-2 border-[#e07070] text-[#e07070] hover:bg-[#e07070] hover:text-white font-bold px-8 py-3 rounded-full text-sm uppercase tracking-wide transition"
-          >
-            Browse Properties
-          </Link>
-          <span className="mx-4 text-stone-300">or</span>
-          <Link
-            href="/en/subscribe"
-            className="inline-block bg-[#e07070] hover:bg-[#cc5c5c] text-white font-bold px-8 py-3 rounded-full text-sm uppercase tracking-wide transition shadow-md"
-          >
-            Subscribe — $7.99/mo
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              href="/en/subscribe"
+              className="bg-[#e07070] hover:bg-[#cc5c5c] text-white font-bold px-8 py-3 rounded-xl text-sm transition"
+            >
+              Subscribe — $7.99/mo
+            </Link>
+            <Link
+              href="/en/akiya"
+              className="border border-white/30 hover:border-white text-white font-bold px-8 py-3 rounded-xl text-sm transition"
+            >
+              Browse Properties
+            </Link>
+          </div>
         </div>
       </section>
 

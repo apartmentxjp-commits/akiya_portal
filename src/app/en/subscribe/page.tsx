@@ -5,13 +5,18 @@ import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Nav, Footer } from '@/components/Nav'
 
-const FEATURES = [
-  { icon: '📊', text: 'Full property record — area, age, structure type, and condition data' },
-  { icon: '📝', text: 'Complete English-translated descriptions for every data entry' },
-  { icon: '📋', text: 'Registrant contact field included in record data' },
-  { icon: '🗺️', text: 'Precise location data for each entry' },
+const MONTHLY_FEATURES = [
+  { icon: '📊', text: 'Full property records — area, age, structure, condition' },
+  { icon: '📝', text: 'Complete English-translated descriptions' },
+  { icon: '📋', text: 'Seller contact data for every listing' },
+  { icon: '🗺️', text: 'Precise location data' },
   { icon: '🔄', text: 'Weekly database updates across all 47 prefectures' },
-  { icon: '🔍', text: 'Advanced filtering by area, price range, and property type' },
+  { icon: '🔍', text: 'Advanced filtering by area, price, and property type' },
+]
+
+const ANNUAL_EXTRAS = [
+  { icon: '🏯', text: '"How to Buy a House in Japan" guide — free ($20 value)' },
+  { icon: '💰', text: '2 months free vs monthly billing' },
 ]
 
 function SubscribeContent() {
@@ -20,6 +25,7 @@ function SubscribeContent() {
   const error = searchParams.get('error')
   const returnTo = searchParams.get('return_to') || '/en/akiya'
 
+  const [plan, setPlan] = useState<'annual' | 'monthly'>('annual')
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [err, setErr] = useState<string | null>(null)
@@ -43,7 +49,7 @@ function SubscribeContent() {
       const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim().toLowerCase(), returnTo }),
+        body: JSON.stringify({ email: email.trim().toLowerCase(), returnTo, plan }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Checkout failed')
@@ -68,9 +74,37 @@ function SubscribeContent() {
             Unlock Full Database Access
           </h1>
           <p className="text-[#8a7a68] text-base">
-            Access complete property records from Japan&apos;s akiya data library —
-            including detailed data fields not available in the free tier.
+            Access complete property records from Japan&apos;s akiya data library.
           </p>
+        </div>
+
+        {/* Plan toggle */}
+        <div className="flex items-center justify-center mb-6">
+          <div className="bg-stone-100 rounded-full p-1 flex gap-1">
+            <button
+              onClick={() => setPlan('annual')}
+              className={`px-5 py-2 rounded-full text-sm font-bold transition ${
+                plan === 'annual'
+                  ? 'bg-[#5a3e18] text-white shadow-sm'
+                  : 'text-stone-500 hover:text-stone-700'
+              }`}
+            >
+              Annual
+              <span className="ml-1.5 text-[10px] bg-[#e07070] text-white px-1.5 py-0.5 rounded-full">
+                BEST VALUE
+              </span>
+            </button>
+            <button
+              onClick={() => setPlan('monthly')}
+              className={`px-5 py-2 rounded-full text-sm font-bold transition ${
+                plan === 'monthly'
+                  ? 'bg-[#5a3e18] text-white shadow-sm'
+                  : 'text-stone-500 hover:text-stone-700'
+              }`}
+            >
+              Monthly
+            </button>
+          </div>
         </div>
 
         {/* Pricing card */}
@@ -81,29 +115,72 @@ function SubscribeContent() {
               background: 'linear-gradient(135deg, #2c2416 0%, #5a3e18 50%, #3d2b10 100%)',
             }}
           >
-            <div className="text-sm font-semibold uppercase tracking-widest mb-1 opacity-80">
-              Monthly Data Access
-            </div>
-            <div className="flex items-end justify-center gap-2">
-              <span className="text-5xl font-bold">$7.99</span>
-              <span className="text-lg opacity-70 mb-2">/month</span>
-            </div>
-            <p className="text-sm opacity-70 mt-1">Cancel anytime — no contracts</p>
+            {plan === 'annual' ? (
+              <>
+                <div className="text-sm font-semibold uppercase tracking-widest mb-1 opacity-80">
+                  Annual Plan
+                </div>
+                <div className="flex items-end justify-center gap-2">
+                  <span className="text-5xl font-bold">$79.99</span>
+                  <span className="text-lg opacity-70 mb-2">/year</span>
+                </div>
+                <p className="text-sm opacity-70 mt-1">
+                  <span className="line-through opacity-50 mr-1">$95.88</span>
+                  ~$6.67/mo · 2 months free
+                </p>
+              </>
+            ) : (
+              <>
+                <div className="text-sm font-semibold uppercase tracking-widest mb-1 opacity-80">
+                  Monthly Plan
+                </div>
+                <div className="flex items-end justify-center gap-2">
+                  <span className="text-5xl font-bold">$7.99</span>
+                  <span className="text-lg opacity-70 mb-2">/month</span>
+                </div>
+                <p className="text-sm opacity-70 mt-1">Cancel anytime</p>
+              </>
+            )}
           </div>
 
           <div className="px-8 py-6">
+            {/* Annual bonus banner */}
+            {plan === 'annual' && (
+              <div className="bg-[#e07070]/10 border border-[#e07070]/30 rounded-xl p-3 mb-5 text-center">
+                <p className="text-sm font-bold text-[#e07070]">
+                  🏯 Includes "How to Buy a House in Japan" guide — free
+                </p>
+                <p className="text-xs text-stone-500 mt-0.5">$20 value · delivered after purchase</p>
+              </div>
+            )}
+
             <p className="text-xs text-[#8a7a68] mb-5 text-center">
               Full access to all data fields in the Japan Property Database
             </p>
 
-            <ul className="space-y-3 mb-8">
-              {FEATURES.map(({ icon, text }) => (
+            <ul className="space-y-3 mb-4">
+              {MONTHLY_FEATURES.map(({ icon, text }) => (
                 <li key={text} className="flex items-start gap-3 text-sm text-[#2c2416]">
                   <span className="text-lg leading-none mt-0.5">{icon}</span>
                   <span>{text}</span>
                 </li>
               ))}
             </ul>
+
+            {plan === 'annual' && (
+              <>
+                <div className="border-t border-stone-100 my-4" />
+                <p className="text-xs font-bold text-[#5a3e18] uppercase tracking-wider mb-3">Annual plan extras</p>
+                <ul className="space-y-3 mb-5">
+                  {ANNUAL_EXTRAS.map(({ icon, text }) => (
+                    <li key={text} className="flex items-start gap-3 text-sm text-[#2c2416]">
+                      <span className="text-lg leading-none mt-0.5">{icon}</span>
+                      <span>{text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
 
             {err && (
               <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
@@ -125,7 +202,11 @@ function SubscribeContent() {
                 disabled={loading}
                 className="w-full bg-[#5a3e18] hover:bg-[#3d2b10] disabled:opacity-60 text-white font-bold py-3 rounded-xl transition text-sm"
               >
-                {loading ? 'Redirecting to checkout…' : '🔓 Unlock Full Access — $7.99/mo'}
+                {loading
+                  ? 'Redirecting to checkout…'
+                  : plan === 'annual'
+                  ? '🔓 Start Annual Plan — $79.99/yr'
+                  : '🔓 Start Monthly Plan — $7.99/mo'}
               </button>
             </form>
 
@@ -135,30 +216,31 @@ function SubscribeContent() {
           </div>
         </div>
 
-        {/* Free vs Full comparison */}
+        {/* Plan comparison */}
         <div className="bg-[#f5f0e8] rounded-2xl p-6 mb-8">
-          <h2 className="font-bold text-[#2c2416] text-sm mb-4">What&apos;s included in each tier</h2>
-          <div className="grid grid-cols-2 gap-4 text-xs">
-            <div>
-              <div className="font-semibold text-[#8a7a68] mb-2 uppercase tracking-wider">Free</div>
-              <ul className="space-y-1 text-[#8a7a68]">
-                <li>✓ Property title</li>
-                <li>✓ Prefecture &amp; city</li>
-                <li>✓ Price range</li>
-                <li>✓ Property type</li>
-                <li>✓ Area (m²)</li>
-              </ul>
-            </div>
-            <div>
-              <div className="font-semibold text-[#5a3e18] mb-2 uppercase tracking-wider">Full Access</div>
-              <ul className="space-y-1 text-[#2c2416]">
-                <li>✓ All free fields</li>
-                <li>✓ Full description (EN)</li>
-                <li>✓ Property history</li>
-                <li>✓ Contact data field</li>
-                <li>✓ Unlimited viewing</li>
-              </ul>
-            </div>
+          <h2 className="font-bold text-[#2c2416] text-sm mb-4">Plan comparison</h2>
+          <div className="grid grid-cols-3 gap-2 text-xs">
+            <div />
+            <div className="font-semibold text-[#8a7a68] text-center uppercase tracking-wider">Monthly<br />$7.99/mo</div>
+            <div className="font-semibold text-[#5a3e18] text-center uppercase tracking-wider">Annual<br />$79.99/yr</div>
+            {[
+              ['Full property database', true, true],
+              ['English translations', true, true],
+              ['Seller contact data', true, true],
+              ['Weekly updates', true, true],
+              ['"How to Buy" guide ($20)', false, true],
+              ['2 months free', false, true],
+            ].map(([label, monthly, annual]) => (
+              <>
+                <div key={String(label)} className="text-[#2c2416] py-1.5 border-t border-stone-200 flex items-center">{label}</div>
+                <div className="text-center py-1.5 border-t border-stone-200 flex items-center justify-center">
+                  {monthly ? <span className="text-emerald-600">✓</span> : <span className="text-stone-300">—</span>}
+                </div>
+                <div className="text-center py-1.5 border-t border-stone-200 flex items-center justify-center">
+                  {annual ? <span className="text-emerald-600 font-bold">✓</span> : <span className="text-stone-300">—</span>}
+                </div>
+              </>
+            ))}
           </div>
         </div>
 
@@ -167,12 +249,12 @@ function SubscribeContent() {
           <h2 className="font-bold text-[#2c2416] text-base">Frequently Asked Questions</h2>
           {[
             {
-              q: 'What is this data library?',
-              a: 'Japan Property Data Library is a structured database of vacant homes (akiya) in Japan. This is an information service only — we do not provide real estate brokerage or advisory services.',
+              q: 'How do I receive the guide with annual plan?',
+              a: 'After your annual subscription is activated, you\'ll receive an email with a link to access the "How to Buy a House in Japan" guide.',
             },
             {
-              q: 'What does the "contact data field" mean?',
-              a: 'Each database record may include a contact field registered by the data submitter. This is raw data provided for informational purposes.',
+              q: 'What is this data library?',
+              a: 'Japan Property Data Library is a structured database of vacant homes (akiya) in Japan. This is an information service only — we do not provide real estate brokerage or advisory services.',
             },
             {
               q: 'How do I cancel?',
@@ -190,7 +272,6 @@ function SubscribeContent() {
           ))}
         </div>
 
-        {/* Disclaimer */}
         <div className="mt-8 p-4 bg-stone-50 border border-stone-200 rounded-xl text-xs text-stone-400 leading-relaxed">
           This service is operated through advertising and data-based services. This website is for informational purposes only. We do not provide real estate brokerage, agency, or advisory services. All decisions are made at the user&apos;s own responsibility.
         </div>
