@@ -13,16 +13,41 @@ async function getLatestProperties() {
   return data || []
 }
 
-// Placeholder properties shown when DB is empty
+// Prefecture/city English translation maps (same as akiya page)
+const PREFECTURE_EN: Record<string, string> = {
+  '北海道':'Hokkaido','青森県':'Aomori','岩手県':'Iwate','宮城県':'Miyagi','秋田県':'Akita',
+  '山形県':'Yamagata','福島県':'Fukushima','茨城県':'Ibaraki','栃木県':'Tochigi','群馬県':'Gunma',
+  '埼玉県':'Saitama','千葉県':'Chiba','東京都':'Tokyo','神奈川県':'Kanagawa','新潟県':'Niigata',
+  '富山県':'Toyama','石川県':'Ishikawa','福井県':'Fukui','山梨県':'Yamanashi','長野県':'Nagano',
+  '岐阜県':'Gifu','静岡県':'Shizuoka','愛知県':'Aichi','三重県':'Mie','滋賀県':'Shiga',
+  '京都府':'Kyoto','大阪府':'Osaka','兵庫県':'Hyogo','奈良県':'Nara','和歌山県':'Wakayama',
+  '鳥取県':'Tottori','島根県':'Shimane','岡山県':'Okayama','広島県':'Hiroshima','山口県':'Yamaguchi',
+  '徳島県':'Tokushima','香川県':'Kagawa','愛媛県':'Ehime','高知県':'Kochi','福岡県':'Fukuoka',
+  '佐賀県':'Saga','長崎県':'Nagasaki','熊本県':'Kumamoto','大分県':'Oita','宮崎県':'Miyazaki',
+  '鹿児島県':'Kagoshima','沖縄県':'Okinawa',
+}
+const CITY_EN: Record<string, string> = {
+  '亀岡市':'Kameoka','安曇野市':'Azumino','軽井沢町':'Karuizawa','飯山市':'Iiyama',
+  '小千谷市':'Ojiya','雲南市':'Unnan','那智勝浦町':'Nachikatsura','三好市':'Miyoshi',
+  '南丹市':'Nantan','大山町':'Daisen','西粟倉村':'Nishiawakura',
+}
+function locationEn(prefecture: string, city?: string): string {
+  const pref = PREFECTURE_EN[prefecture] || prefecture
+  if (!city) return pref
+  const cityEn = CITY_EN[city] || city.replace(/[市町村区郡]$/, '')
+  return `${cityEn}, ${pref}`
+}
+
+// Placeholder properties with real Unsplash photos (shown when DB has no images)
 const SAMPLE_PROPS = [
-  { loc: 'Setouchi, Okayama', price: '$55,000', gradient: 'from-blue-900 via-teal-800 to-emerald-800', emoji: '🌊' },
-  { loc: 'Maniwa, Okayama',   price: '$29,000', gradient: 'from-amber-900 via-stone-800 to-stone-700', emoji: '🏯' },
-  { loc: 'Kokonoe, Oita',     price: '$64,000', gradient: 'from-green-900 via-emerald-800 to-teal-800', emoji: '⛰️' },
-  { loc: 'Mimasaka, Okayama', price: '$45,000', gradient: 'from-slate-800 via-stone-700 to-stone-600', emoji: '🌸' },
-  { loc: 'Iiyama, Nagano',    price: '$14,000', gradient: 'from-amber-800 via-amber-700 to-stone-700', emoji: '🌾' },
-  { loc: 'Ojiya, Niigata',    price: '$6,500',  gradient: 'from-green-800 via-green-700 to-emerald-700', emoji: '🌿' },
-  { loc: 'Kameoka, Kyoto',    price: '$29,000', gradient: 'from-slate-700 via-slate-600 to-stone-600', emoji: '🏘️' },
-  { loc: 'Karuizawa, Nagano', price: '$42,000', gradient: 'from-blue-800 via-indigo-700 to-slate-700', emoji: '🏔️' },
+  { loc: 'Kameoka, Kyoto',    price: '$18,667', photo: 'photo-1528360983277-13d401cdc186' },
+  { loc: 'Azumino, Nagano',   price: '$10,000', photo: 'photo-1545569341-9eb8b30979d9' },
+  { loc: 'Karuizawa, Nagano', price: '$42,000', photo: 'photo-1480796927426-f609979314bd' },
+  { loc: 'Iiyama, Nagano',    price: '$14,000', photo: 'photo-1490806843957-31f4c9a91c65' },
+  { loc: 'Unnan, Shimane',    price: '$8,000',  photo: 'photo-1542051841857-5f90071e7989' },
+  { loc: 'Miyoshi, Tokushima',price: '$5,500',  photo: 'photo-1524413840807-0c3cb6fa808d' },
+  { loc: 'Daisen, Tottori',   price: '$22,000', photo: 'photo-1466442929976-97f336a657be' },
+  { loc: 'Ojiya, Niigata',    price: '$6,500',  photo: 'photo-1578469645742-46cae010e5d4' },
 ]
 
 export default async function EnHomePage() {
@@ -134,10 +159,14 @@ export default async function EnHomePage() {
           <h2 className="text-3xl font-bold text-stone-800 text-center mb-3">Featured Properties</h2>
           <p className="text-stone-500 text-sm text-center mb-10">A sample of properties available in our database</p>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {properties.length > 0
-              ? properties.slice(0, 8).map((p: any) => {
-                  const hasPhoto = p.images && p.images.length > 0
+          {(() => {
+            // Use DB properties that have images; fill remaining slots with sample props
+            const withPhotos = properties.filter((p: any) => p.images && p.images.length > 0)
+            const slotsNeeded = Math.max(0, 8 - withPhotos.length)
+            const samples = SAMPLE_PROPS.slice(0, slotsNeeded)
+            return (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {withPhotos.slice(0, 8).map((p: any) => {
                   const priceUSD = p.price ? `$${Math.round(p.price * 10000 / 150).toLocaleString()}` : 'POA'
                   return (
                     <Link
@@ -145,33 +174,35 @@ export default async function EnHomePage() {
                       href="/en/subscribe"
                       className="group relative block aspect-square overflow-hidden rounded-xl"
                     >
-                      {hasPhoto ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={p.images[0]}
-                          alt={p.title_en || p.title}
-                          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 bg-gradient-to-br from-stone-700 via-stone-600 to-stone-500" />
-                      )}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={p.images[0]}
+                        alt={p.title_en || p.title}
+                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                       <div className="absolute bottom-0 left-0 right-0 p-3">
                         <p className="text-white font-bold text-sm">{priceUSD}</p>
-                        <p className="text-white/80 text-xs">{p.prefecture}{p.city ? `, ${p.city}` : ''}</p>
+                        <p className="text-white/80 text-xs">{locationEn(p.prefecture, p.city)}</p>
+                      </div>
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span className="bg-white text-stone-800 text-xs font-bold px-3 py-1.5 rounded-full">Subscribe to view</span>
                       </div>
                     </Link>
                   )
-                })
-              : SAMPLE_PROPS.map((s, i) => (
+                })}
+                {samples.map((s, i) => (
                   <Link
-                    key={i}
+                    key={`sample-${i}`}
                     href="/en/subscribe"
                     className="group relative block aspect-square overflow-hidden rounded-xl"
                   >
-                    <div className={`absolute inset-0 bg-gradient-to-br ${s.gradient} flex items-center justify-center`}>
-                      <span className="text-5xl">{s.emoji}</span>
-                    </div>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={`https://images.unsplash.com/${s.photo}?w=600&auto=format&fit=crop&q=80`}
+                      alt={s.loc}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                     <div className="absolute bottom-0 left-0 right-0 p-3">
                       <p className="text-white font-bold text-sm">{s.price}</p>
@@ -181,9 +212,10 @@ export default async function EnHomePage() {
                       <span className="bg-white text-stone-800 text-xs font-bold px-3 py-1.5 rounded-full">Subscribe to view</span>
                     </div>
                   </Link>
-                ))
-            }
-          </div>
+                ))}
+              </div>
+            )
+          })()}
 
           <div className="text-center mt-8">
             <Link
