@@ -24,7 +24,8 @@ export const supabaseAdmin = createClient(
 )
 
 // ── Constants ─────────────────────────────────────────────────────────────────
-export const STRIPE_PRICE_ID = process.env.STRIPE_PRICE_ID! // $7.99/month price
+export const STRIPE_PRICE_ID        = process.env.STRIPE_PRICE_ID!         // $7.99/month
+export const STRIPE_ANNUAL_PRICE_ID = process.env.STRIPE_ANNUAL_PRICE_ID!   // $79.99/year
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
 // ── Helper: check if email has active subscription ───────────────────────────
