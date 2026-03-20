@@ -1,10 +1,20 @@
 import Stripe from 'stripe'
 import { createClient } from '@supabase/supabase-js'
 
-// ── Stripe server client ──────────────────────────────────────────────────────
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  apiVersion: '2026-02-25.clover' as any,
+// ── Stripe server client (lazy init to avoid build-time failures) ─────────────
+let _stripe: Stripe | null = null
+export function getStripe(): Stripe {
+  if (!_stripe) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    _stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2026-02-25.clover' as any })
+  }
+  return _stripe
+}
+/** @deprecated use getStripe() */
+export const stripe = new Proxy({} as Stripe, {
+  get(_t, prop: string) {
+    return (getStripe() as unknown as Record<string, unknown>)[prop]
+  },
 })
 
 // ── Supabase admin client (service_role — server only) ────────────────────────
