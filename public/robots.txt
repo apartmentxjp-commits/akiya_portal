@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /en/
+
+Disallow: /submit
+Disallow: /akiya
+Disallow: /agent
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://akiya.tacky-consulting.com/sitemap.xml

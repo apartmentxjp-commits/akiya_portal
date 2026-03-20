@@ -1,11 +1,11 @@
 import { Nav, Footer } from '@/components/Nav'
 import { PropertyCard } from '@/components/PropertyCard'
-import { supabase } from '@/lib/supabase'
+import { supabase, PUBLIC_PROPERTY_FIELDS } from '@/lib/supabase'
 
 async function getProperties(prefecture?: string, maxPrice?: number) {
   let query = supabase
     .from('properties')
-    .select('*')
+    .select(PUBLIC_PROPERTY_FIELDS)  // address excluded — 都道府県・市区町村まで
     .eq('status', 'approved')
     .order('created_at', { ascending: false })
 

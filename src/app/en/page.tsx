@@ -3,531 +3,320 @@ import { Nav, Footer } from '@/components/Nav'
 import { PropertyCard } from '@/components/PropertyCard'
 import { supabase, PUBLIC_PROPERTY_FIELDS } from '@/lib/supabase'
 
-async function getLatestEntries() {
+async function getLatestProperties() {
   const { data } = await supabase
     .from('properties')
     .select(PUBLIC_PROPERTY_FIELDS)
     .eq('status', 'approved')
     .order('created_at', { ascending: false })
-    .limit(3)
+    .limit(8)
   return data || []
 }
 
-// Mock locked cards to show the "want to see more" psychology
-const LOCKED_CARDS = [
-  { prefecture: 'Nagano', city: 'Matsumoto', type: 'Kominka', area: '142㎡', price: '¥2.8M range' },
-  { prefecture: 'Kyoto', city: 'Kameoka', type: 'Machiya', area: '88㎡', price: '¥4.5M range' },
-  { prefecture: 'Niigata', city: 'Ojiya', type: 'Farmhouse', area: '210㎡', price: '¥980K range' },
+// Placeholder properties shown when DB is empty
+const SAMPLE_PROPS = [
+  { loc: 'Setouchi, Okayama', price: '$55,000', gradient: 'from-blue-900 via-teal-800 to-emerald-800', emoji: '🌊' },
+  { loc: 'Maniwa, Okayama',   price: '$29,000', gradient: 'from-amber-900 via-stone-800 to-stone-700', emoji: '🏯' },
+  { loc: 'Kokonoe, Oita',     price: '$64,000', gradient: 'from-green-900 via-emerald-800 to-teal-800', emoji: '⛰️' },
+  { loc: 'Mimasaka, Okayama', price: '$45,000', gradient: 'from-slate-800 via-stone-700 to-stone-600', emoji: '🌸' },
+  { loc: 'Iiyama, Nagano',    price: '$14,000', gradient: 'from-amber-800 via-amber-700 to-stone-700', emoji: '🌾' },
+  { loc: 'Ojiya, Niigata',    price: '$6,500',  gradient: 'from-green-800 via-green-700 to-emerald-700', emoji: '🌿' },
+  { loc: 'Kameoka, Kyoto',    price: '$29,000', gradient: 'from-slate-700 via-slate-600 to-stone-600', emoji: '🏘️' },
+  { loc: 'Karuizawa, Nagano', price: '$42,000', gradient: 'from-blue-800 via-indigo-700 to-slate-700', emoji: '🏔️' },
 ]
 
 export default async function EnHomePage() {
-  const entries = await getLatestEntries()
+  const properties = await getLatestProperties()
 
   return (
     <>
       <Nav lang="en" />
 
-      {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-[#050f08] text-white min-h-screen flex items-center">
-        {/* Background layers */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#020b05] via-[#071a0e] to-[#040d07]" />
-          {/* Large bokeh blobs */}
-          <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-[#1a5c35]/30 rounded-full blur-[120px] translate-x-1/4 -translate-y-1/4" />
-          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#5a3e18]/15 rounded-full blur-[100px] -translate-x-1/4 translate-y-1/4" />
-          <div className="absolute top-1/2 left-1/2 w-[400px] h-[400px] bg-[#c9a96e]/8 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
-          {/* Grid overlay */}
-          <svg className="absolute inset-0 w-full h-full opacity-[0.025]" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="grid-hero" width="60" height="60" patternUnits="userSpaceOnUse">
-                <path d="M 60 0 L 0 0 0 60" fill="none" stroke="white" strokeWidth="0.5"/>
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid-hero)" />
-          </svg>
-          {/* Diagonal accent line */}
-          <div className="absolute top-0 right-[25%] w-px h-full bg-gradient-to-b from-transparent via-[#7ecfa0]/20 to-transparent" />
-        </div>
+      {/* ── Hero ─────────────────────────────────────────────────────────── */}
+      <section className="relative h-[75vh] min-h-[500px] flex items-center overflow-hidden">
+        {/* Background photo */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=1920&auto=format&fit=crop&q=80"
+          alt="Japanese village street"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/45" />
 
-        <div className="relative max-w-6xl mx-auto px-6 py-32 w-full">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Left: headline */}
-            <div>
-              <div className="flex items-center gap-3 mb-8">
-                <div className="h-px w-10 bg-[#7ecfa0]" />
-                <p className="text-[#7ecfa0] text-xs font-semibold tracking-[0.25em] uppercase">
-                  Japan Property Data Library
-                </p>
-              </div>
-
-              <h1 className="font-serif text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.05] mb-8">
-                Japan&apos;s vacant homes,
-                <br />
-                <span className="text-[#7ecfa0]">fully catalogued.</span>
-              </h1>
-
-              <p className="text-white/55 text-lg leading-relaxed mb-10 max-w-lg">
-                A structured data library of akiya (空き家) across all 47 prefectures.
-                Browse records, filter by region and price range, and access complete
-                property data — all in English.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/en/akiya"
-                  className="group inline-flex items-center justify-center gap-2 bg-[#7ecfa0] hover:bg-[#5bb882] text-[#050f08] font-bold px-9 py-4 rounded-xl transition-all text-base shadow-lg shadow-[#7ecfa0]/25 hover:shadow-[#7ecfa0]/40 hover:scale-[1.02]"
-                >
-                  Browse the Database
-                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
-                <Link
-                  href="/en/subscribe"
-                  className="inline-flex items-center justify-center gap-2 border border-white/20 hover:border-[#c9a96e]/60 text-white/70 hover:text-[#c9a96e] font-semibold px-9 py-4 rounded-xl transition-all text-base"
-                >
-                  Unlock Full Access
-                </Link>
-              </div>
-            </div>
-
-            {/* Right: stats card */}
-            <div className="hidden lg:block">
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8">
-                <p className="text-white/40 text-xs uppercase tracking-widest mb-6">Database Overview</p>
-                <div className="space-y-6">
-                  {[
-                    { value: '9,000,000+', label: 'Vacant homes recorded nationwide', accent: '#7ecfa0' },
-                    { value: '47', label: 'Prefectures covered', accent: '#c9a96e' },
-                    { value: '13.8%', label: 'Of all Japanese housing stock is vacant', accent: '#7ecfa0' },
-                    { value: 'Weekly', label: 'Data updates from municipal sources', accent: '#c9a96e' },
-                  ].map((s) => (
-                    <div key={s.label} className="flex items-start gap-4 pb-6 border-b border-white/5 last:border-0 last:pb-0">
-                      <div className="w-1 h-8 rounded-full flex-shrink-0 mt-1" style={{ backgroundColor: s.accent }} />
-                      <div>
-                        <p className="text-2xl font-bold text-white">{s.value}</p>
-                        <p className="text-white/40 text-xs mt-0.5 leading-relaxed">{s.label}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-30">
-          <p className="text-white text-[10px] tracking-widest uppercase">Scroll</p>
-          <div className="w-px h-8 bg-gradient-to-b from-white to-transparent" />
+        <div className="relative max-w-6xl mx-auto px-6 w-full">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6 max-w-2xl">
+            Find Your Dream<br />Home In Japan
+          </h1>
+          <Link
+            href="/en/akiya"
+            className="inline-block bg-[#e07070] hover:bg-[#cc5c5c] text-white font-bold px-10 py-4 rounded-full text-sm uppercase tracking-widest transition shadow-lg hover:shadow-xl hover:scale-[1.02]"
+          >
+            Browse Properties
+          </Link>
         </div>
       </section>
 
-      {/* ── Context bar ──────────────────────────────────────────────────── */}
-      <section className="bg-[#050f08] border-b border-white/5">
-        <div className="max-w-6xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-white/30 text-xs">
-            <span className="w-1.5 h-1.5 bg-[#7ecfa0] rounded-full animate-pulse" />
-            <span>Data library — for informational purposes only</span>
-          </div>
-          <div className="flex items-center gap-6 text-white/20 text-[11px]">
-            <span>🗾 All 47 prefectures</span>
-            <span>·</span>
-            <span>English interface</span>
-            <span>·</span>
-            <span>Structured records</span>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Background section ───────────────────────────────────────────── */}
-      <section className="bg-[#f5f0e8] border-b border-[#e2d8cc] py-20">
+      {/* ── 3-feature row ────────────────────────────────────────────────── */}
+      <section className="bg-white py-16">
         <div className="max-w-5xl mx-auto px-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-6 bg-[#7ecfa0]" />
-            <p className="text-[#7ecfa0] text-xs tracking-widest uppercase font-semibold">The Akiya Crisis</p>
-          </div>
-          <h2 className="font-serif text-3xl lg:text-4xl font-bold text-[#1a0e06] mb-12 max-w-2xl">
-            Japan has more vacant homes than any developed nation.
-          </h2>
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
+          <div className="grid md:grid-cols-3 gap-10">
             {[
               {
-                stat: '9,000,000+',
-                label: 'Vacant homes in Japan',
-                note: 'As of the 2023 Housing & Land Survey (Ministry of Internal Affairs and Communications)',
-              },
-              {
-                stat: '13.8%',
-                label: 'National vacancy rate',
-                note: "Japan's vacancy rate is among the highest of any developed nation and is projected to rise",
-              },
-              {
-                stat: 'Scattered',
-                label: 'Across 1,700+ municipalities',
-                note: 'Most data is published only in Japanese by individual local governments — invisible globally',
-              },
-            ].map((item) => (
-              <div key={item.stat} className="bg-white rounded-2xl border border-[#e2d8cc] p-6">
-                <p className="font-serif text-4xl font-bold text-[#1a3d2b] mb-1">{item.stat}</p>
-                <p className="font-semibold text-[#1a0e06] text-sm mb-2">{item.label}</p>
-                <p className="text-xs text-[#8a7a68] leading-relaxed">{item.note}</p>
-              </div>
-            ))}
-          </div>
-          <div className="bg-white border border-[#e2d8cc] rounded-2xl p-6 max-w-3xl">
-            <p className="text-sm text-[#5a4a3a] leading-relaxed">
-              Japan Property Data Library aggregates, translates, and structures this scattered information
-              into a single English-language resource — making Japan&apos;s vacant property inventory
-              accessible to researchers, analysts, and data users worldwide.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── How the data works ───────────────────────────────────────────── */}
-      <section className="max-w-5xl mx-auto px-6 py-20">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="h-px w-6 bg-[#7ecfa0]" />
-          <p className="text-[#7ecfa0] text-xs tracking-widest uppercase font-semibold">Data Access</p>
-        </div>
-        <h2 className="font-serif text-3xl font-bold text-[#1a0e06] mb-12">
-          Browse free. Unlock everything.
-        </h2>
-        <div className="grid md:grid-cols-3 gap-6">
-          {[
-            {
-              step: '01',
-              title: 'Browse the catalog',
-              desc: 'Search and filter thousands of property records by prefecture, city, price range, and property type. All records are accessible without registration.',
-              color: '#7ecfa0',
-            },
-            {
-              step: '02',
-              title: 'Preview record data',
-              desc: 'Free records show title, location, price range, and property type. Enough to identify properties of interest and evaluate fit.',
-              color: '#c9a96e',
-            },
-            {
-              step: '03',
-              title: 'Unlock full data access',
-              desc: 'Full Access ($7.99/mo) reveals complete property data: full address, building area, year built, English description, history, and registrant contact field.',
-              color: '#7ecfa0',
-            },
-          ].map((item) => (
-            <div key={item.step} className="relative p-6 rounded-2xl border border-[#e2d8cc] bg-white hover:border-[#7ecfa0]/40 hover:shadow-card transition-all">
-              <p className="font-serif text-5xl font-bold text-[#e2d8cc] mb-4 leading-none">{item.step}</p>
-              <h3 className="font-serif font-bold text-[#1a0e06] text-lg mb-2">{item.title}</h3>
-              <p className="text-sm text-[#8a7a68] leading-relaxed">{item.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Sample data with locked cards ────────────────────────────────── */}
-      <section className="bg-[#f5f0e8] border-y border-[#e2d8cc] py-20">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-6 bg-[#7ecfa0]" />
-            <p className="text-[#7ecfa0] text-xs tracking-widest uppercase font-semibold">Sample Records</p>
-          </div>
-          <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
-            <h2 className="font-serif text-3xl font-bold text-[#1a0e06]">
-              What the data looks like
-            </h2>
-            <Link href="/en/akiya" className="text-sm text-[#1a3d2b] font-semibold hover:text-[#5a3e18] transition flex items-center gap-1">
-              View full database →
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-            {/* Live free cards */}
-            {entries.map((p: any) => (
-              <PropertyCard key={p.id} p={p} lang="en" />
-            ))}
-            {/* Fallback if no DB entries */}
-            {entries.length === 0 && (
-              <div className="col-span-full text-center py-12 text-[#8a7a68] text-sm">
-                Loading sample records…
-              </div>
-            )}
-          </div>
-
-          {/* Locked / teaser cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 relative">
-            {/* Blur overlay */}
-            <div className="absolute inset-0 z-10 pointer-events-none rounded-2xl"
-                 style={{ backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }} />
-
-            {/* Lock gate */}
-            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-4">
-              <div className="bg-white/95 backdrop-blur border border-[#e2d8cc] rounded-2xl shadow-xl px-8 py-6 text-center max-w-xs">
-                <div className="w-10 h-10 bg-[#1a3d2b] rounded-full flex items-center justify-center mx-auto mb-3">
-                  <svg className="w-5 h-5 text-[#7ecfa0]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                icon: (
+                  <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                   </svg>
-                </div>
-                <p className="font-bold text-[#1a0e06] mb-1">More records available</p>
-                <p className="text-xs text-[#8a7a68] mb-4 leading-relaxed">
-                  Full Access unlocks complete records including addresses, areas, descriptions, and contact data.
-                </p>
-                <Link
-                  href="/en/subscribe"
-                  className="inline-flex items-center gap-1.5 bg-[#1a3d2b] text-white text-sm font-bold px-6 py-2.5 rounded-xl hover:bg-[#0d2019] transition"
-                >
-                  Unlock Full Access — $7.99/mo
-                </Link>
-              </div>
-            </div>
-
-            {/* Blurred dummy cards */}
-            {LOCKED_CARDS.map((card, i) => (
-              <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-card border border-border opacity-60">
-                <div className="h-48 bg-gradient-to-br from-stone-700 via-stone-600 to-stone-500" />
-                <div className="p-4">
-                  <div className="h-4 bg-[#e2d8cc] rounded w-3/4 mb-2" />
-                  <div className="h-3 bg-[#e2d8cc] rounded w-1/2 mb-4" />
-                  <div className="flex gap-3">
-                    <span className="text-xs text-[#8a7a68]">📍 {card.prefecture}, {card.city}</span>
-                  </div>
-                  <div className="flex gap-2 mt-3">
-                    <span className="text-[10px] bg-[#f5f0e8] text-[#8a7a68] px-2 py-0.5 rounded-full">{card.type}</span>
-                    <span className="text-[10px] bg-[#f5f0e8] text-[#8a7a68] px-2 py-0.5 rounded-full">{card.area}</span>
-                    <span className="text-[10px] bg-[#f5f0e8] text-[#8a7a68] px-2 py-0.5 rounded-full">{card.price}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Data tier comparison ─────────────────────────────────────────── */}
-      <section className="max-w-4xl mx-auto px-6 py-20">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="h-px w-6 bg-[#7ecfa0]" />
-          <p className="text-[#7ecfa0] text-xs tracking-widest uppercase font-semibold">Data Tiers</p>
-        </div>
-        <h2 className="font-serif text-3xl font-bold text-[#1a0e06] mb-12">What&apos;s included</h2>
-
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Free tier */}
-          <div className="bg-white rounded-2xl border border-[#e2d8cc] p-7">
-            <p className="text-xs font-bold uppercase tracking-widest text-[#8a7a68] mb-2">Free Access</p>
-            <p className="text-2xl font-bold text-[#1a0e06] mb-1">$0</p>
-            <p className="text-xs text-[#8a7a68] mb-6">No registration required</p>
-            <ul className="space-y-3">
-              {[
-                { text: 'Property title', included: true },
-                { text: 'Prefecture & city', included: true },
-                { text: 'Property type', included: true },
-                { text: 'Price range', included: true },
-                { text: 'Full address & map', included: false },
-                { text: 'Building / land area', included: false },
-                { text: 'English description', included: false },
-                { text: 'Property history', included: false },
-                { text: 'Registrant contact field', included: false },
-              ].map((item) => (
-                <li key={item.text} className="flex items-center gap-3 text-sm">
-                  {item.included ? (
-                    <span className="w-4 h-4 text-[#7ecfa0] flex-shrink-0">✓</span>
-                  ) : (
-                    <span className="w-4 h-4 text-[#e2d8cc] flex-shrink-0">—</span>
-                  )}
-                  <span className={item.included ? 'text-[#1a0e06]' : 'text-[#c4b8a8]'}>{item.text}</span>
-                </li>
-              ))}
-            </ul>
-            <Link
-              href="/en/akiya"
-              className="mt-7 block text-center border border-[#e2d8cc] text-[#8a7a68] text-sm font-semibold py-3 rounded-xl hover:border-[#7ecfa0]/50 hover:text-[#1a3d2b] transition"
-            >
-              Browse Free Records
-            </Link>
-          </div>
-
-          {/* Paid tier */}
-          <div className="bg-[#1a3d2b] rounded-2xl border-2 border-[#5a3e18] p-7 relative overflow-hidden">
-            <div className="absolute top-4 right-4">
-              <span className="bg-[#c9a96e] text-[#1a0e06] text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide">
-                Full Access
-              </span>
-            </div>
-            <p className="text-xs font-bold uppercase tracking-widest text-[#7ecfa0]/70 mb-2">Full Data Access</p>
-            <p className="text-2xl font-bold text-white mb-1">$7.99<span className="text-sm font-normal text-white/50">/month</span></p>
-            <p className="text-xs text-white/40 mb-6">Cancel anytime</p>
-            <ul className="space-y-3">
-              {[
-                'Property title',
-                'Prefecture & city',
-                'Property type',
-                'Price range',
-                'Full address & map',
-                'Building / land area',
-                'Year built',
-                'Full English description',
-                'Property history',
-                'Registrant contact field',
-                'Unlimited data exports',
-                'Advanced filtering',
-              ].map((item) => (
-                <li key={item} className="flex items-center gap-3 text-sm">
-                  <span className="w-4 h-4 text-[#7ecfa0] flex-shrink-0">✓</span>
-                  <span className="text-white/80">{item}</span>
-                </li>
-              ))}
-            </ul>
-            <Link
-              href="/en/subscribe"
-              className="mt-7 block text-center bg-[#c9a96e] hover:bg-[#b8956a] text-[#1a0e06] text-sm font-bold py-3 rounded-xl transition shadow-lg"
-            >
-              Unlock Full Data Access →
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Features ─────────────────────────────────────────────────────── */}
-      <section className="bg-[#050f08] text-white py-20">
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-6 bg-[#7ecfa0]" />
-            <p className="text-[#7ecfa0] text-xs tracking-widest uppercase font-semibold">Features</p>
-          </div>
-          <h2 className="font-serif text-3xl font-bold mb-12">Built for data users</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                icon: '🔍',
-                title: 'Full-text search',
-                desc: 'Search by property name, city, region, or keyword across the entire database.',
+                ),
+                title: 'One Step Closer To Your Dream',
+                desc: "Japan doesn't have to be expensive. We've catalogued thousands of properties for less than $100k, even under $30k. Your dream home in Japan is waiting.",
               },
               {
-                icon: '⚙️',
-                title: 'Advanced filtering',
-                desc: 'Filter by prefecture, price range, property type, land area, building area, and year built.',
+                icon: (
+                  <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                  </svg>
+                ),
+                title: 'Full Database Access',
+                desc: 'Subscribe to get the full address, all photos, complete specifications, and direct contact info for every property — all in English.',
               },
               {
-                icon: '🗾',
-                title: 'Geographic coverage',
-                desc: 'Complete coverage across all 47 prefectures, from Hokkaido to Okinawa.',
-              },
-              {
-                icon: '🌐',
-                title: 'English throughout',
-                desc: 'All interface elements and property descriptions are available in English.',
-              },
-              {
-                icon: '📊',
-                title: 'Structured records',
-                desc: 'Consistent data schema across all entries — area, type, price, year, location, and more.',
-              },
-              {
-                icon: '🔄',
-                title: 'Weekly updates',
-                desc: 'New records added weekly from municipal akiya bank programs across Japan.',
+                icon: (
+                  <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                  </svg>
+                ),
+                title: 'Info On Buying A House in Japan',
+                desc: 'Get our free guide on buying a house in Japan as a foreigner — just like & repost on X. All the info you need to buy confidently without speaking Japanese.',
               },
             ].map((f) => (
-              <div key={f.title} className="bg-white/5 border border-white/8 rounded-2xl p-6 hover:bg-white/8 transition">
-                <p className="text-2xl mb-3">{f.icon}</p>
-                <h3 className="font-semibold text-white mb-1.5">{f.title}</h3>
-                <p className="text-sm text-white/45 leading-relaxed">{f.desc}</p>
+              <div key={f.title} className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-12 h-12 bg-[#e07070]/10 rounded-full flex items-center justify-center text-[#e07070]">
+                  {f.icon}
+                </div>
+                <div>
+                  <h3 className="font-bold text-stone-800 text-base mb-2">{f.title}</h3>
+                  <p className="text-stone-500 text-sm leading-relaxed">{f.desc}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── CTA banner ───────────────────────────────────────────────────── */}
-      <section className="bg-[#1a3d2b] py-20">
+      {/* ── Did you know ─────────────────────────────────────────────────── */}
+      <section className="bg-[#f9f9f9] py-16">
         <div className="max-w-3xl mx-auto px-6 text-center">
-          <p className="text-[#7ecfa0] text-xs tracking-widest uppercase font-semibold mb-4">Get Started</p>
-          <h2 className="font-serif text-3xl lg:text-4xl font-bold text-white mb-4">
-            Access Japan&apos;s largest akiya dataset.
+          <h2 className="text-3xl font-bold text-stone-800 mb-5">
+            Did You Know You Can Buy a House in Japan?
           </h2>
-          <p className="text-white/50 text-base mb-8 leading-relaxed">
-            Free browsing, no registration required.
-            Unlock full data access for $7.99/month — cancel anytime.
+          <p className="text-stone-600 leading-relaxed mb-4">
+            Yes — even as a non-resident. Even on a tourist visa. You can purchase property in Japan
+            and have full ownership. This is a little-known secret.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <p className="text-stone-600 leading-relaxed mb-4">
+            Japan is one of the best and most underrated places in the world to own a vacation home.
+            Housing costs are incredibly low, property taxes are minimal, and it&apos;s an extraordinary
+            place to spend time.
+          </p>
+          <Link
+            href="/en/faq"
+            className="text-[#e07070] hover:text-[#cc5c5c] font-semibold text-sm transition"
+          >
+            Read the FAQ for more information →
+          </Link>
+        </div>
+      </section>
+
+      {/* ── Featured Properties ──────────────────────────────────────────── */}
+      <section className="bg-white py-16">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-3xl font-bold text-stone-800 text-center mb-3">Featured Properties</h2>
+          <p className="text-stone-500 text-sm text-center mb-10">A sample of properties available in our database</p>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {properties.length > 0
+              ? properties.slice(0, 8).map((p: any) => {
+                  const hasPhoto = p.images && p.images.length > 0
+                  const priceUSD = p.price ? `$${Math.round(p.price * 10000 / 150).toLocaleString()}` : 'POA'
+                  return (
+                    <Link
+                      key={p.id}
+                      href="/en/subscribe"
+                      className="group relative block aspect-square overflow-hidden rounded-xl"
+                    >
+                      {hasPhoto ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={p.images[0]}
+                          alt={p.title_en || p.title}
+                          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 bg-gradient-to-br from-stone-700 via-stone-600 to-stone-500" />
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                      <div className="absolute bottom-0 left-0 right-0 p-3">
+                        <p className="text-white font-bold text-sm">{priceUSD}</p>
+                        <p className="text-white/80 text-xs">{p.prefecture}{p.city ? `, ${p.city}` : ''}</p>
+                      </div>
+                    </Link>
+                  )
+                })
+              : SAMPLE_PROPS.map((s, i) => (
+                  <Link
+                    key={i}
+                    href="/en/subscribe"
+                    className="group relative block aspect-square overflow-hidden rounded-xl"
+                  >
+                    <div className={`absolute inset-0 bg-gradient-to-br ${s.gradient} flex items-center justify-center`}>
+                      <span className="text-5xl">{s.emoji}</span>
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-3">
+                      <p className="text-white font-bold text-sm">{s.price}</p>
+                      <p className="text-white/80 text-xs">{s.loc}</p>
+                    </div>
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="bg-white text-stone-800 text-xs font-bold px-3 py-1.5 rounded-full">Subscribe to view</span>
+                    </div>
+                  </Link>
+                ))
+            }
+          </div>
+
+          <div className="text-center mt-8">
             <Link
               href="/en/akiya"
-              className="inline-flex items-center justify-center gap-2 bg-[#7ecfa0] hover:bg-[#5bb882] text-[#050f08] font-bold px-9 py-4 rounded-xl transition-all shadow-lg hover:scale-[1.02]"
+              className="inline-block border-2 border-stone-200 hover:border-[#e07070] text-stone-600 hover:text-[#e07070] font-semibold px-8 py-3 rounded-full text-sm transition"
             >
-              Browse Free Records
-            </Link>
-            <Link
-              href="/en/subscribe"
-              className="inline-flex items-center justify-center gap-2 border border-[#c9a96e]/50 hover:border-[#c9a96e] text-[#c9a96e] font-semibold px-9 py-4 rounded-xl transition-all"
-            >
-              Unlock Full Access — $7.99/mo
+              Browse All Properties
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ── FAQ ──────────────────────────────────────────────────────────── */}
-      <section className="max-w-3xl mx-auto px-6 py-20">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="h-px w-6 bg-[#7ecfa0]" />
-          <p className="text-[#7ecfa0] text-xs tracking-widest uppercase font-semibold">FAQ</p>
-        </div>
-        <h2 className="font-serif text-3xl font-bold text-[#1a0e06] mb-10">Frequently asked questions</h2>
-        <div className="space-y-3">
-          {[
-            {
-              q: 'What is Japan Property Data Library?',
-              a: 'A structured data library of vacant homes (akiya) in Japan. We collect, translate, and publish property data from municipal akiya bank programs for informational and research purposes.',
-            },
-            {
-              q: 'Is this a real estate agency?',
-              a: 'No. This is a data library service only. We do not provide real estate brokerage, agency, advisory, introduction, or negotiation services of any kind. All data is for informational purposes only. Any decisions are made entirely at the user\'s own responsibility.',
-            },
-            {
-              q: 'What are akiya (空き家)?',
-              a: 'Akiya are vacant or abandoned homes. Japan has over 9 million such properties — roughly 13.8% of all housing. Many are listed by municipalities via "akiya bank" programs as part of revitalization efforts.',
-            },
-            {
-              q: 'What does Full Access include?',
-              a: 'Full Access ($7.99/mo) unlocks complete property records: full address, building and land area, year built, detailed English description, property history, and registrant contact field stored in our database.',
-            },
-            {
-              q: 'Can I contact property owners through this service?',
-              a: 'Full Access records include a registrant contact field sourced from public akiya bank data. However, we do not act as intermediary, broker, or agent. Any contact is made directly by the user at their own discretion and responsibility.',
-            },
-            {
-              q: 'How accurate is the data?',
-              a: 'All data is sourced from publicly available municipal akiya bank programs. We do not independently verify property conditions, ownership, or availability. Data accuracy depends on the originating municipal source and may not reflect current status.',
-            },
-          ].map((item) => (
-            <div key={item.q} className="border border-[#e2d8cc] rounded-xl p-5 hover:border-[#7ecfa0]/40 transition bg-white">
-              <p className="font-semibold text-[#1a0e06] mb-2">Q. {item.q}</p>
-              <p className="text-sm text-[#8a7a68] leading-relaxed">A. {item.a}</p>
-            </div>
-          ))}
+      {/* ── Subscribe CTA ────────────────────────────────────────────────── */}
+      <section className="bg-[#f9f9f9] py-20">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <h2 className="text-3xl font-bold text-stone-800 mb-5">
+            Get Full Access to Japan&apos;s Largest<br />English Akiya Database
+          </h2>
+          <p className="text-stone-600 leading-relaxed mb-2">
+            Subscribe to unlock full addresses, all photos, complete specifications, and direct contact
+            info for every property in our database. Most properties under $150k, many under $30k.
+          </p>
+          <p className="text-stone-500 text-sm mb-8">
+            Data sourced from 1,800+ Japanese municipal akiya bank programs.
+          </p>
+          <Link
+            href="/en/subscribe"
+            className="inline-block bg-[#e07070] hover:bg-[#cc5c5c] text-white font-bold px-10 py-4 rounded-full text-sm uppercase tracking-widest transition shadow-md hover:shadow-lg"
+          >
+            Get Full Access — $7.99/month
+          </Link>
+          <p className="text-stone-400 text-xs mt-3">Cancel anytime · No Japanese required · Instant access</p>
         </div>
       </section>
 
-      {/* ── Disclaimer ───────────────────────────────────────────────────── */}
-      <section className="bg-[#f5f0e8] border-t border-[#e2d8cc] py-12">
-        <div className="max-w-3xl mx-auto px-6">
-          <div className="bg-white border border-[#e2d8cc] rounded-2xl p-6 space-y-4">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-1 h-4 bg-[#c9a96e] rounded-full" />
-              <p className="text-xs font-bold text-[#5a3e18] uppercase tracking-widest">Important Notice</p>
+      {/* ── Guide (free via X) ───────────────────────────────────────────── */}
+      <section className="bg-white py-20">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <p className="text-[#e07070] text-xs font-bold uppercase tracking-widest mb-3">Free Guide</p>
+              <h2 className="text-3xl font-bold text-stone-800 mb-5 leading-tight">
+                How To Buy A House<br />In Japan Guide
+              </h2>
+              <p className="text-stone-600 leading-relaxed mb-6">
+                Our comprehensive guide covers everything a foreigner needs to know about
+                purchasing property in Japan — from finding listings, to the step-by-step
+                purchase process, hidden costs, renovation subsidies, and managing your
+                property from abroad.
+              </p>
+              <ul className="space-y-2 mb-8">
+                {[
+                  'Step-by-step purchase process',
+                  'How to find and evaluate properties',
+                  'Costs, taxes, and hidden fees',
+                  'Working without a Japanese translator',
+                  'Managing your home from overseas',
+                  'Japan visa & long-stay considerations',
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-2.5 text-sm text-stone-600">
+                    <span className="w-4 h-4 bg-[#e07070]/15 text-[#e07070] rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0">✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href="/en/guide"
+                className="inline-block bg-[#e07070] hover:bg-[#cc5c5c] text-white font-bold px-8 py-3.5 rounded-full text-sm uppercase tracking-wider transition shadow-md"
+              >
+                Get The Free Guide
+              </Link>
+              <p className="text-stone-400 text-xs mt-3">
+                Free — just like &amp; repost on X to unlock
+              </p>
             </div>
-            <p className="text-xs text-[#5a4a3a] leading-relaxed">
-              This service is operated through advertising and data-based services.
-              This website is for informational purposes only. We do not provide real estate brokerage,
-              agency, intermediary, advisory, or solicitation services of any kind.
-              All decisions are made at the user&apos;s own responsibility.
-            </p>
-            <p className="text-xs text-[#5a4a3a] leading-relaxed border-t border-[#e2d8cc] pt-4">
-              本サービスは広告掲載およびデータ提供により運営されています。
-              本サイトは情報提供を目的としており、不動産の売買・仲介・代理・紹介・勧誘等は行っておりません。
-              最終判断は利用者ご自身の責任で行ってください。
-            </p>
+            {/* Ebook mockup */}
+            <div className="flex justify-center">
+              <div className="relative w-64">
+                {/* Tablet frame */}
+                <div className="bg-stone-900 rounded-[24px] p-3 shadow-2xl">
+                  <div className="bg-stone-800 rounded-[18px] overflow-hidden">
+                    {/* Screen */}
+                    <div className="relative bg-gradient-to-br from-stone-700 via-stone-600 to-stone-500 aspect-[3/4] flex flex-col items-center justify-center p-6">
+                      <div className="text-center">
+                        <div className="text-6xl mb-4">🏯</div>
+                        <p className="text-white font-bold text-lg leading-tight mb-1">HOW TO BUY A<br />HOUSE IN JAPAN</p>
+                        <p className="text-white/60 text-xs mt-2">A foreigner&apos;s guide to finding your dream property in the Land of the Rising Sun</p>
+                        <div className="mt-4 border-t border-white/20 pt-3">
+                          <p className="text-white/50 text-[10px] uppercase tracking-widest">Akiya Japan</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {/* Home button */}
+                  <div className="flex justify-center mt-2">
+                    <div className="w-8 h-1.5 bg-stone-600 rounded-full" />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
+      </section>
+
+      {/* ── About ────────────────────────────────────────────────────────── */}
+      <section className="bg-[#f9f9f9] py-16">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <h2 className="text-2xl font-bold text-stone-800 mb-6">What Is Akiya Japan?</h2>
+          <p className="text-stone-600 leading-relaxed mb-4">
+            Japan&apos;s akiya crisis has left over 9 million homes vacant across the country. Local governments
+            are actively inviting foreign buyers — some properties sell for as little as $1,000. The problem?
+            All the information is in Japanese and scattered across 1,800+ municipal websites.
+          </p>
+          <p className="text-stone-600 leading-relaxed mb-4">
+            We collect, translate, and publish these listings in English — giving international buyers
+            a single place to search all of Japan&apos;s available vacant homes.
+          </p>
+          <p className="text-stone-600 leading-relaxed">
+            Browse free. Subscribe to unlock full addresses, photos, and contact details for every property.
+          </p>
+        </div>
+      </section>
+
+      {/* ── Final CTA ────────────────────────────────────────────────────── */}
+      <section className="bg-white py-14">
+        <div className="max-w-xl mx-auto px-6 text-center">
+          <h2 className="text-2xl font-bold text-stone-800 mb-5">Subscribe Now</h2>
+          <Link
+            href="/en/subscribe"
+            className="inline-block bg-[#e07070] hover:bg-[#cc5c5c] text-white font-bold px-10 py-4 rounded-full text-sm uppercase tracking-widest transition shadow-md hover:shadow-lg"
+          >
+            Get Full Access — $7.99/month
+          </Link>
         </div>
       </section>
 

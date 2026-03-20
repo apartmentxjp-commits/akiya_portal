@@ -1,12 +1,12 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Nav, Footer } from '@/components/Nav'
-import { supabase } from '@/lib/supabase'
+import { supabase, PUBLIC_PROPERTY_FIELDS } from '@/lib/supabase'
 
 async function getProperty(id: string) {
   const { data } = await supabase
     .from('properties')
-    .select('*')
+    .select(PUBLIC_PROPERTY_FIELDS)  // address excluded — 都道府県・市区町村まで
     .eq('id', id)
     .eq('status', 'approved')
     .single()
@@ -14,7 +14,7 @@ async function getProperty(id: string) {
 }
 
 export default async function PropertyDetailPage({ params }: { params: { id: string } }) {
-  const p = await getProperty(params.id)
+  const p = await getProperty(params.id) as any
   if (!p) notFound()
 
   const age = p.year_built ? new Date().getFullYear() - p.year_built : null
@@ -60,7 +60,7 @@ export default async function PropertyDetailPage({ params }: { params: { id: str
                 { label: '建物面積', value: p.building_area ? `${p.building_area}㎡` : '-' },
                 { label: '土地面積', value: p.land_area ? `${p.land_area}㎡` : '-' },
                 { label: '築年数', value: age ? `築${age}年（${p.year_built}年）` : '-' },
-                { label: '所在地', value: `${p.prefecture} ${p.city}` },
+                { label: '所在地', value: `${p.prefecture} ${p.city}` },  // 番地以下は非表示
               ].map(({ label, value }) => (
                 <div key={label} className="bg-[#f5f0e8] rounded-lg p-3">
                   <div className="text-xs text-[#8a7a68] mb-1">{label}</div>

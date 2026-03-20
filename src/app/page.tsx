@@ -19,15 +19,10 @@ export default async function SellerHomePage() {
 
       {/* Hero */}
       <section className="relative overflow-hidden bg-[#0d0904] text-white min-h-[85vh] flex items-center">
-        {/* Background layered pattern */}
         <div className="absolute inset-0">
-          {/* Base gradient */}
           <div className="absolute inset-0 bg-gradient-to-br from-[#0d0904] via-[#1a0e06] to-[#0d1a10]" />
-          {/* Warm radial glow left */}
           <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-[#5a3e18]/20 rounded-full blur-3xl -translate-x-1/3 -translate-y-1/4" />
-          {/* Cool radial glow right */}
           <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#2d5a3d]/15 rounded-full blur-3xl translate-x-1/4 translate-y-1/4" />
-          {/* Geometric lines overlay */}
           <svg className="absolute inset-0 w-full h-full opacity-[0.04]" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
@@ -40,51 +35,46 @@ export default async function SellerHomePage() {
 
         <div className="relative max-w-5xl mx-auto px-6 py-24 w-full">
           <div className="max-w-3xl">
-            {/* Eyebrow */}
             <div className="flex items-center gap-3 mb-8">
               <div className="h-px w-8 bg-[#c9a96e]" />
               <p className="text-[#c9a96e] text-xs font-medium tracking-[0.2em] uppercase">
-                空き家・古民家オーナーの方へ
+                空き家データベース — 物件情報の掲載
               </p>
             </div>
 
-            {/* Headline */}
             <h1 className="font-serif text-5xl md:text-6xl font-bold leading-[1.1] mb-6">
-              あなたの空き家を、
+              あなたの空き家情報を、
               <br />
-              <span className="text-[#c9a96e]">世界中の</span>
-              <span className="text-white">バイヤーへ。</span>
+              <span className="text-[#c9a96e]">データベースに登録。</span>
             </h1>
 
             <p className="text-white/60 text-lg leading-relaxed mb-4 max-w-xl">
-              日本の古い家に惹かれる外国人が急増中です。
-              写真と住所を入れるだけで、AIが英語説明を自動生成します。
+              本サービスは日本全国の空き家・古民家の物件情報を収集・整理するデータライブラリです。
+              情報を登録することで、海外閲覧者にデータとして公開されます。
             </p>
             <p className="text-[#c9a96e]/80 text-sm mb-10">
               掲載料：完全無料　・　登録時間：約5分　・　AI英訳：自動
             </p>
 
-            {/* CTA */}
             <div className="flex flex-col sm:flex-row gap-4 items-start">
               <Link
                 href="/submit"
                 className="group inline-flex items-center gap-2 bg-[#c9a96e] hover:bg-[#b8924a] text-[#1a0e06] font-bold px-8 py-4 rounded-xl transition-all text-base shadow-lg shadow-[#c9a96e]/20 hover:shadow-[#c9a96e]/30 hover:scale-[1.02]"
               >
-                無料で物件を掲載する
+                無料でデータを登録する
                 <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </Link>
               <Link href="/en" className="text-white/40 text-sm self-center hover:text-white/70 transition">
-                🌏 For buyers → English site
+                🌏 English data library →
               </Link>
             </div>
 
-            {/* Stats */}
             <div className="flex items-center gap-8 mt-14 pt-10 border-t border-white/5">
               {[
-                { value: `${count}+`, label: '掲載物件' },
-                { value: '無料', label: '掲載料' },
+                { value: `${count}+`, label: '登録データ件数' },
+                { value: '無料', label: 'データ登録料' },
                 { value: 'AI', label: '英語自動翻訳' },
               ].map((s) => (
                 <div key={s.label}>
@@ -97,31 +87,31 @@ export default async function SellerHomePage() {
         </div>
       </section>
 
-      {/* Why list here */}
+      {/* Features */}
       <section className="max-w-5xl mx-auto px-6 py-20">
         <div className="flex items-center gap-3 mb-3">
           <div className="h-px w-6 bg-[#c9a96e]" />
-          <p className="text-[#c9a96e] text-xs tracking-widest uppercase">Why us</p>
+          <p className="text-[#c9a96e] text-xs tracking-widest uppercase">Features</p>
         </div>
         <h2 className="font-serif text-3xl font-bold text-[#1a0e06] mb-12">
-          Akiya Japan に掲載する理由
+          データ登録のメリット
         </h2>
         <div className="grid md:grid-cols-3 gap-6">
           {[
             {
               num: '01',
-              title: '海外バイヤーに直接届く',
-              desc: '英語・USD表示で、米・欧・豪のバイヤーが直接見ています。仲介なしで問い合わせが届きます。',
+              title: '海外閲覧者にデータが届く',
+              desc: '英語・USD表示で、米・欧・豪のユーザーがデータベースを閲覧しています。登録メールアドレスがデータの一部として公開されます。',
             },
             {
               num: '02',
               title: 'AIが英語説明を自動生成',
-              desc: '日本語で入力するだけ。Groq AIが自然な英語の説明文・タグ・SEOを全自動で作ります。',
+              desc: '日本語で入力するだけ。Groq AIが英語説明文を自動生成し、データベースに格納します。',
             },
             {
               num: '03',
-              title: '完全無料・手数料ゼロ',
-              desc: '掲載費用も成約手数料もありません。売主とバイヤーが直接やり取りします。',
+              title: '完全無料・データ登録のみ',
+              desc: '掲載費用はありません。当サービスは情報提供のみを目的とするデータプラットフォームです。',
             },
           ].map((item) => (
             <div key={item.num} className="group relative p-6 rounded-2xl border border-[#e2d8cc] hover:border-[#c9a96e]/50 bg-white hover:shadow-card transition-all">
@@ -142,14 +132,14 @@ export default async function SellerHomePage() {
             <div className="h-px w-6 bg-[#c9a96e]" />
             <p className="text-[#c9a96e] text-xs tracking-widest uppercase">How it works</p>
           </div>
-          <h2 className="font-serif text-3xl font-bold text-[#1a0e06] mb-12">掲載の流れ</h2>
+          <h2 className="font-serif text-3xl font-bold text-[#1a0e06] mb-12">登録の流れ</h2>
           <div className="space-y-3">
             {[
-              { step: '01', title: '物件情報を入力', desc: '住所・価格・写真・説明を入力（約5分）。英語は不要です。' },
-              { step: '02', title: 'AIが英語を自動生成', desc: 'Groq AIが英語説明・SEOタグを全自動で生成します。' },
-              { step: '03', title: '審査・世界公開', desc: '24時間以内に審査完了。英語対応のページで世界に公開されます。' },
-              { step: '04', title: 'バイヤーから連絡が届く', desc: '登録メールに直接問い合わせが届きます。仲介不要。' },
-            ].map((s, i) => (
+              { step: '01', title: '物件情報を入力', desc: '住所・価格・説明を入力（約5分）。英語は不要です。' },
+              { step: '02', title: 'AIが英語を自動生成', desc: 'Groq AIが英語説明を生成し、データベースに格納します。' },
+              { step: '03', title: 'データベースに掲載', desc: '24時間以内に審査完了。英語サイトのデータベースに公開されます。' },
+              { step: '04', title: '閲覧者から連絡が届く', desc: '登録メールアドレスに問い合わせが届く場合があります。' },
+            ].map((s) => (
               <div key={s.step} className="flex items-start gap-5 p-5 bg-white rounded-xl border border-[#e2d8cc] hover:shadow-card transition-all">
                 <span className="font-serif text-3xl font-bold text-[#e2d8cc] leading-none w-10 shrink-0">{s.step}</span>
                 <div>
@@ -162,9 +152,9 @@ export default async function SellerHomePage() {
           <div className="text-center mt-10">
             <Link
               href="/submit"
-              className="inline-flex items-center gap-2 bg-[#5a3e18] text-white font-bold px-10 py-4 rounded-xl hover:bg-[#3d2b10] transition shadow-lg hover:shadow-xl hover:scale-[1.02]"
+              className="inline-flex items-center gap-2 bg-[#5a3e18] text-white font-bold px-10 py-4 rounded-xl hover:bg-[#3d2b10] transition shadow-lg"
             >
-              今すぐ無料で掲載する →
+              今すぐ無料で登録する →
             </Link>
           </div>
         </div>
@@ -179,16 +169,24 @@ export default async function SellerHomePage() {
         <h2 className="font-serif text-3xl font-bold text-[#1a0e06] mb-10">よくある質問</h2>
         <div className="space-y-3">
           {[
-            { q: '掲載は本当に無料？', a: 'はい。掲載料・成約手数料ともに無料です。' },
-            { q: '外国人は日本の家を買えますか？', a: 'はい。日本では外国人も不動産購入が可能です。海外バイヤーはその点を理解しています。' },
-            { q: '英語が話せなくて大丈夫？', a: 'はい。AIが英語説明を自動生成します。バイヤーとのやり取りは翻訳ツールで対応できます。' },
-            { q: '写真なしで掲載できますか？', a: 'はい。写真なしでも掲載できますが、写真があると問い合わせ数が増えます。' },
+            { q: '登録は本当に無料？', a: 'はい。データ登録料は無料です。本サービスは広告掲載およびデータ提供により運営されています。' },
+            { q: '外国人は日本の家を買えますか？', a: 'はい。日本では外国人も不動産購入が可能です。ただし本サービスは情報提供のみを目的としており、売買・仲介は行っておりません。' },
+            { q: '英語が話せなくて大丈夫？', a: 'はい。AIが英語説明を自動生成します。' },
+            { q: '写真なしで登録できますか？', a: 'はい。写真なしでもデータ登録が可能です。' },
           ].map((item) => (
             <div key={item.q} className="border border-[#e2d8cc] rounded-xl p-5 hover:border-[#c9a96e]/40 transition bg-white">
               <p className="font-semibold text-[#1a0e06] mb-1.5">Q. {item.q}</p>
               <p className="text-sm text-[#8a7a68]">A. {item.a}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Legal disclaimer ────────────────────────────────────────────────── */}
+      <section className="max-w-3xl mx-auto px-6 pb-16">
+        <div className="p-5 bg-[#f5f0e8] border border-[#e2d8cc] rounded-xl text-xs text-[#8a7a68] leading-relaxed space-y-2">
+          <p>本サービスは広告掲載およびデータ提供により運営されています。</p>
+          <p>本サイトは情報提供を目的としており、不動産の売買・仲介・代理・勧誘等は行っておりません。掲載情報の正確性・完全性を保証するものではありません。最終判断は利用者ご自身の責任で行ってください。</p>
         </div>
       </section>
 
