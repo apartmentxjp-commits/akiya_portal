@@ -1,3 +1,5 @@
+export const revalidate = 0
+
 import { Nav, Footer } from '@/components/Nav'
 import { supabase, PUBLIC_PROPERTY_FIELDS } from '@/lib/supabase'
 import Link from 'next/link'
