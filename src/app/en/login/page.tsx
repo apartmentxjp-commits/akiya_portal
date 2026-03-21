@@ -5,7 +5,7 @@ import { Nav, Footer } from '@/components/Nav'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
-  const [status, setStatus] = useState<'idle' | 'loading' | 'sent' | 'error'>('idle')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'error'>('idle')
   const [message, setMessage] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -21,8 +21,9 @@ export default function LoginPage() {
     const json = await res.json()
 
     if (res.ok) {
-      setStatus('sent')
-      setMessage(json.message || 'Check your email for the login link.')
+      // Hard redirect so browser sends the new cookie on the next request
+      window.location.href = '/en/akiya'
+      return
     } else {
       setStatus('error')
       setMessage(json.error || 'Something went wrong.')
@@ -41,20 +42,7 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {status === 'sent' ? (
-          <div className="bg-[#f0faf4] border border-[#a8d5b5] rounded-xl p-6 text-center">
-            <div className="text-3xl mb-3">✅</div>
-            <p className="text-[#2c6e49] font-semibold mb-2">Access granted!</p>
-            <p className="text-sm text-[#8a7a68]">{message}</p>
-            <a
-              href="/en/akiya"
-              className="mt-4 inline-block bg-[#5a3e18] text-white font-bold px-6 py-3 rounded-xl hover:bg-[#3d2b10] transition text-sm"
-            >
-              Browse Listings →
-            </a>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="text-sm text-[#8a7a68] mb-1 block">Email address</label>
               <input
@@ -88,7 +76,6 @@ export default function LoginPage() {
               </a>
             </p>
           </form>
-        )}
       </main>
       <Footer lang="en" />
     </>
