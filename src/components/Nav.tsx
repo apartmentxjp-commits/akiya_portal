@@ -28,8 +28,14 @@ export function Nav({ lang = 'ja' }: { lang?: 'ja' | 'en' }) {
               FAQ
             </Link>
             <Link
+              href="/en/login"
+              className="ml-2 px-3 py-2 text-stone-600 hover:text-stone-900 transition rounded-md text-sm"
+            >
+              Login
+            </Link>
+            <Link
               href="/en/subscribe"
-              className="ml-2 px-4 py-2 bg-[#e07070] hover:bg-[#cc5c5c] text-white font-semibold rounded-full text-sm transition shadow-sm"
+              className="ml-1 px-4 py-2 bg-[#e07070] hover:bg-[#cc5c5c] text-white font-semibold rounded-full text-sm transition shadow-sm"
             >
               Full Access $7.99/mo
             </Link>

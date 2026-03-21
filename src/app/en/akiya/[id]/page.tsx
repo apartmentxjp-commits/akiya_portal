@@ -73,9 +73,28 @@ export default async function EnPropertyDetailPage({ params }: { params: { id: s
         {/* Always-visible teaser: image + title + price ──────────────────── */}
         <div className="grid md:grid-cols-2 gap-8">
           <div>
-            <div className="bg-gradient-to-br from-stone-100 to-amber-50 rounded-xl h-72 flex items-center justify-center text-8xl">
-              🏯
-            </div>
+            {/* Show actual photo for subscribers; blurred teaser for non-subscribers */}
+            {p.images && p.images.length > 0 ? (
+              <div className="relative rounded-xl overflow-hidden h-72">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={p.images[0]}
+                  alt={title}
+                  className={`w-full h-full object-cover transition-all duration-300 ${subscribed ? '' : 'blur-md scale-105'}`}
+                />
+                {!subscribed && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                    <span className="text-white text-sm font-semibold bg-black/50 px-4 py-2 rounded-full">
+                      🔒 Subscribe to view
+                    </span>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="bg-gradient-to-br from-stone-100 to-amber-50 rounded-xl h-72 flex items-center justify-center text-8xl">
+                🏯
+              </div>
+            )}
             {/* Japanese version link */}
             <div className="mt-4 p-3 bg-[#f5f0e8] rounded-lg text-sm">
               <span className="text-[#8a7a68]">🇯🇵 日本語版: </span>
