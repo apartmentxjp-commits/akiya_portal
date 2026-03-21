@@ -29,10 +29,16 @@ function SubscribeContent() {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [err, setErr] = useState<string | null>(null)
+  const [alreadySubscribed, setAlreadySubscribed] = useState(false)
 
   useEffect(() => {
     if (canceled) setErr('Payment was canceled. You can try again anytime.')
     if (error === 'activation_failed') setErr('There was an issue activating your subscription. Please contact support.')
+    // Check if already logged in as active subscriber
+    fetch('/api/stripe/check-subscriber')
+      .then((r) => r.json())
+      .then((d) => { if (d.active) setAlreadySubscribed(true) })
+      .catch(() => {})
   }, [canceled, error])
 
   async function handleSubscribe(e: React.FormEvent) {
@@ -58,6 +64,29 @@ function SubscribeContent() {
       setErr(e instanceof Error ? e.message : 'Something went wrong. Please try again.')
       setLoading(false)
     }
+  }
+
+  // Already logged in as subscriber → show redirect panel
+  if (alreadySubscribed) {
+    return (
+      <>
+        <Nav lang="en" />
+        <main className="max-w-md mx-auto px-4 py-20 text-center">
+          <div className="text-5xl mb-4">✅</div>
+          <h1 className="text-2xl font-bold text-[#2c2416] mb-2">You&apos;re already subscribed!</h1>
+          <p className="text-[#8a7a68] text-sm mb-6">
+            Your subscription is active. You have full access to all property details.
+          </p>
+          <a
+            href={returnTo}
+            className="inline-block bg-[#5a3e18] text-white font-bold px-8 py-3 rounded-xl hover:bg-[#3d2b10] transition"
+          >
+            Browse Properties →
+          </a>
+        </main>
+        <Footer lang="en" />
+      </>
+    )
   }
 
   return (

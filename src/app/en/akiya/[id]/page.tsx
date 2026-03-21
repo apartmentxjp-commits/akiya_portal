@@ -6,6 +6,9 @@ import { supabase, PUBLIC_PROPERTY_FIELDS } from '@/lib/supabase'
 import { isActiveSubscriber } from '@/lib/stripe'
 import PaywallGate from './PaywallGate'
 
+// cookiesを読むためキャッシュを無効化
+export const dynamic = 'force-dynamic'
+
 const PREFECTURE_EN: Record<string, string> = {
   '北海道':'Hokkaido','青森県':'Aomori','岩手県':'Iwate','宮城県':'Miyagi',
   '秋田県':'Akita','山形県':'Yamagata','福島県':'Fukushima','茨城県':'Ibaraki',

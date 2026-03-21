@@ -77,6 +77,13 @@ export default function PaywallGate({ mode, propertyId }: Props) {
         </Link>
 
         <p className="text-xs text-[#8a7a68] mt-3">Cancel anytime · Secure checkout via Stripe</p>
+
+        <p className="text-xs text-[#8a7a68] mt-2">
+          Already subscribed?{' '}
+          <Link href="/en/login" className="text-[#5a3e18] underline hover:no-underline">
+            Login here →
+          </Link>
+        </p>
       </div>
     </div>
   )
