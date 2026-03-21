@@ -15,7 +15,7 @@ async function getProperties(prefecture?: string, maxPrice?: number, type?: stri
   if (maxPrice) query = query.lte('price', maxPrice)
   if (type) query = query.eq('property_type', type)
 
-  const { data } = await query.limit(60)
+  const { data } = await query.limit(200)
   return data || []
 }
 
@@ -50,23 +50,50 @@ const PREFECTURE_EN: Record<string, string> = {
 }
 
 const CITY_EN: Record<string, string> = {
-  '亀岡市':'Kameoka','安曇野市':'Azumino','軽井沢町':'Karuizawa','那須塩原市':'Nasu Shiobara',
-  '箱根町':'Hakone','日光市':'Nikko','富士河口湖町':'Fujikawaguchiko','高山市':'Takayama',
-  '白川村':'Shirakawa','飛騨市':'Hida','下呂市':'Gero','松本市':'Matsumoto',
-  '諏訪市':'Suwa','伊那市':'Ina','飯田市':'Iida','飯山市':'Iiyama',
-  '糸魚川市':'Itoigawa','妙高市':'Myoko','南砺市':'Nanto','小浜市':'Obama',
+  // 北海道
+  '函館市':'Hakodate','室蘭市':'Muroran','小樽市':'Otaru','旭川市':'Asahikawa',
+  '帯広市':'Obihiro','釧路市':'Kushiro','北見市':'Kitami','網走市':'Abashiri',
+  '稚内市':'Wakkanai','浦幌町':'Urahoro','月形町':'Tsukigata','芦別市':'Ashibetsu',
+  // 東北
+  '大船渡市':'Ofunato','宮古市':'Miyako','岩泉町':'Iwaizumi','紫波町':'Shiwa',
+  '弘前市':'Hirosaki','八戸市':'Hachinohe','十和田市':'Towada','平川市':'Hirakawa',
+  '山形市':'Yamagata','米沢市':'Yonezawa','鶴岡市':'Tsuruoka','酒田市':'Sakata',
+  '福島市':'Fukushima','郡山市':'Koriyama','会津若松市':'Aizu Wakamatsu',
+  // 関東
+  '安中市':'Annaka','桐生市':'Kiryu','みどり市':'Midori','沼田市':'Numata',
+  '藤岡市':'Fujioka','富岡市':'Tomioka','渋川市':'Shibukawa','吾妻郡':'Agatsuma',
+  '館林市':'Tatebayashi','那須塩原市':'Nasu Shiobara','日光市':'Nikko',
+  '箱根町':'Hakone','富士河口湖町':'Fujikawaguchiko',
+  // 中部・北陸
+  '十日町市':'Tokamachi','小千谷市':'Ojiya','佐渡市':'Sado','魚沼市':'Uonuma',
+  '長岡市':'Nagaoka','上越市':'Joetsu','糸魚川市':'Itoigawa','妙高市':'Myoko',
+  '南砺市':'Nanto','小浜市':'Obama','高山市':'Takayama','白川村':'Shirakawa',
+  '飛騨市':'Hida','下呂市':'Gero','松本市':'Matsumoto','安曇野市':'Azumino',
+  '軽井沢町':'Karuizawa','飯山市':'Iiyama','諏訪市':'Suwa','伊那市':'Ina',
+  '飯田市':'Iida','長野市':'Nagano',
+  // 関西
+  '亀岡市':'Kameoka','南丹市':'Nantan','京都市':'Kyoto','宇治市':'Uji',
+  '福知山市':'Fukuchiyama','舞鶴市':'Maizuru','綾部市':'Ayabe','美山町':'Miyama',
   '大津市':'Otsu','彦根市':'Hikone','長浜市':'Nagahama','米原市':'Maibara',
-  '篠山市':'Sasayama','丹波篠山市':'Tanba Sasayama','豊岡市':'Toyooka','養父市':'Yabu',
-  '朝来市':'Asago','美作市':'Mimasaka','津山市':'Tsuyama','真庭市':'Maniwa',
-  '新見市':'Niimi','瀬戸内市':'Setouchi','倉吉市':'Kurayoshi','三朝町':'Misasa',
+  '丹波篠山市':'Tanba Sasayama','豊岡市':'Toyooka','養父市':'Yabu','朝来市':'Asago',
+  '紀の川市':'Kinokawa','かつらぎ町':'Katsuragi','湯浅町':'Yuasa','田辺市':'Tanabe',
+  // 中国・四国
   '雲南市':'Unnan','大田市':'Oda','出雲市':'Izumo','浜田市':'Hamada',
-  '益田市':'Masuda','萩市':'Hagi','周南市':'Shunan','山口市':'Yamaguchi',
+  '益田市':'Masuda','美作市':'Mimasaka','津山市':'Tsuyama','真庭市':'Maniwa',
+  '新見市':'Niimi','瀬戸内市':'Setouchi','倉吉市':'Kurayoshi','三朝町':'Misasa',
+  '萩市':'Hagi','周南市':'Shunan','山口市':'Yamaguchi City',
   '三好市':'Miyoshi','上勝町':'Kamikatsu','美馬市':'Mima','東みよし町':'Higashi Miyoshi',
   '四万十市':'Shimanto','四万十町':'Shimanto','梼原町':'Yusuhara','仁淀川町':'Niyodogawa',
+  '須崎市':'Susaki','高知市':'Kochi City','土佐市':'Tosa',
+  // 九州・沖縄
+  '枕崎市':'Makurazaki','出水市':'Izumi','南九州市':'Minami Kyushu',
+  '屋久島町':'Yakushima','指宿市':'Ibusuki','霧島市':'Kirishima',
+  '南さつま市':'Minami Satsuma','鹿児島市':'Kagoshima City',
   '津久見市':'Tsukumi','竹田市':'Taketa','九重町':'Kokonoe','玖珠町':'Kusu',
   '阿蘇市':'Aso','南阿蘇村':'Minami Aso','球磨村':'Kuma','人吉市':'Hitoyoshi',
   '天草市':'Amakusa','壱岐市':'Iki','対馬市':'Tsushima','五島市':'Goto',
-  '指宿市':'Ibusuki','霧島市':'Kirishima','南さつま市':'Minami Satsuma',
+  '宮崎市':'Miyazaki City','日南市':'Nichinan','えびの市':'Ebino',
+  '沖縄市':'Okinawa City','那覇市':'Naha','名護市':'Nago',
 }
 
 function locationEn(prefecture: string, city?: string): string {
