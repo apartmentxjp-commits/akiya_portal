@@ -1,7 +1,9 @@
-export const revalidate = 0
+export const dynamic = 'force-dynamic'
 
 import { Nav, Footer } from '@/components/Nav'
 import { supabase, PUBLIC_PROPERTY_FIELDS } from '@/lib/supabase'
+import { isActiveSubscriber } from '@/lib/stripe'
+import { cookies } from 'next/headers'
 import Link from 'next/link'
 
 async function getProperties(prefecture?: string, maxPrice?: number, type?: string) {
@@ -134,6 +136,10 @@ export default async function EnAkiyaListPage({
   const properties = await getProperties(prefecture, maxPrice, propertyType)
   const hasFilters = prefecture || maxPrice || propertyType
 
+  const cookieStore = await cookies()
+  const subEmail = cookieStore.get('sub_email')?.value || ''
+  const subscribed = subEmail ? await isActiveSubscriber(subEmail) : false
+
   return (
     <>
       <Nav lang="en" />
@@ -264,7 +270,7 @@ export default async function EnAkiyaListPage({
                 return (
                   <Link
                     key={p.id}
-                    href="/en/subscribe"
+                    href={subscribed ? `/en/akiya/${p.id}` : '/en/subscribe'}
                     className="group relative block aspect-square overflow-hidden rounded-xl"
                   >
                     {hasPhoto ? (
@@ -283,7 +289,9 @@ export default async function EnAkiyaListPage({
                       <p className="text-white/80 text-xs">{locationEn(p.prefecture, p.city)}</p>
                     </div>
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <span className="bg-white text-stone-800 text-xs font-bold px-3 py-1.5 rounded-full">Subscribe to view details</span>
+                      <span className="bg-white text-stone-800 text-xs font-bold px-3 py-1.5 rounded-full">
+                        {subscribed ? 'View details →' : 'Subscribe to view details'}
+                      </span>
                     </div>
                   </Link>
                 )
