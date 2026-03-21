@@ -8,7 +8,9 @@ import type { NextRequest } from 'next/server'
  * Seller-facing paths are not available on this domain.
  * Root "/" redirects to the English library.
  */
-const SELLER_PATHS = ['/submit', '/akiya', '/agent', '/admin']
+// Seller-facing paths not available on the English-only domain.
+// /akiya is intentionally excluded — /en/akiya/* is the English library.
+const SELLER_PATHS = ['/submit', '/agent', '/admin']
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
