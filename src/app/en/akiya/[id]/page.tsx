@@ -59,8 +59,8 @@ export default async function EnPropertyDetailPage({ params }: { params: { id: s
   const subscribed = await isActiveSubscriber(subEmail)
   // ─────────────────────────────────────────────────────────────────────────
 
-  const title = p.title_en || p.title
-  const description = p.description_en || p.description
+  const title = p.title_en || `Property #${p.id}`
+
   const age = p.year_built ? new Date().getFullYear() - p.year_built : null
   const priceUsd = p.price ? Math.round(p.price * 10000 / 150) : null
 
@@ -98,13 +98,6 @@ export default async function EnPropertyDetailPage({ params }: { params: { id: s
                 🏯
               </div>
             )}
-            {/* Japanese version link */}
-            <div className="mt-4 p-3 bg-[#f5f0e8] rounded-lg text-sm">
-              <span className="text-[#8a7a68]">🇯🇵 日本語版: </span>
-              <Link href={`/akiya/${p.id}`} className="text-[#4a7c59] font-medium hover:underline">
-                日本語で見る →
-              </Link>
-            </div>
           </div>
 
           <div>
