@@ -16,7 +16,11 @@ async function getProperties(prefecture?: string, maxPrice?: number, type?: stri
   if (type) query = query.eq('property_type', type)
 
   const { data } = await query.limit(200)
-  return data || []
+  // 成約・交渉中物件を除外
+  const SKIP = ['成約', '交渉中', '申込', '売約', '商談中', '契約済']
+  return (data || []).filter((p: any) =>
+    !SKIP.some(kw => (p.title || '').includes(kw) || (p.title_en || '').toLowerCase().includes('sold') || (p.title_en || '').toLowerCase().includes('negotiat'))
+  )
 }
 
 const PRICE_RANGES = [
