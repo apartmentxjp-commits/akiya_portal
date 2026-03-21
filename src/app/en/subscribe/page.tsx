@@ -66,34 +66,21 @@ function SubscribeContent() {
     }
   }
 
-  // Already logged in as subscriber → show redirect panel
-  if (alreadySubscribed) {
-    return (
-      <>
-        <Nav lang="en" />
-        <main className="max-w-md mx-auto px-4 py-20 text-center">
-          <div className="text-5xl mb-4">✅</div>
-          <h1 className="text-2xl font-bold text-[#2c2416] mb-2">You&apos;re already subscribed!</h1>
-          <p className="text-[#8a7a68] text-sm mb-6">
-            Your subscription is active. You have full access to all property details.
-          </p>
-          <a
-            href={returnTo}
-            className="inline-block bg-[#5a3e18] text-white font-bold px-8 py-3 rounded-xl hover:bg-[#3d2b10] transition"
-          >
-            Browse Properties →
-          </a>
-        </main>
-        <Footer lang="en" />
-      </>
-    )
-  }
-
   return (
     <>
       <Nav lang="en" />
 
       <main className="max-w-2xl mx-auto px-4 py-16">
+        {/* Already subscribed banner */}
+        {alreadySubscribed && (
+          <div className="mb-8 bg-[#f0faf4] border border-[#a8d5b5] rounded-xl p-5 text-center">
+            <p className="font-semibold text-[#2c6e49] mb-2">✅ You&apos;re already subscribed!</p>
+            <a href={returnTo} className="text-sm text-[#5a3e18] font-bold underline hover:no-underline">
+              Go to property listings →
+            </a>
+          </div>
+        )}
+
         {/* Header */}
         <div className="text-center mb-10">
           <div className="inline-block bg-[#f5f0e8] border border-[#e2d8cc] rounded-full px-4 py-1.5 text-xs text-[#5a3e18] font-semibold uppercase tracking-widest mb-4">
