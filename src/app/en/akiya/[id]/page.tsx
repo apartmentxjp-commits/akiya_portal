@@ -4,40 +4,11 @@ import { cookies } from 'next/headers'
 import { Nav, Footer } from '@/components/Nav'
 import { supabase, PUBLIC_PROPERTY_FIELDS } from '@/lib/supabase'
 import { isActiveSubscriber } from '@/lib/stripe'
+import { locationEn } from '@/lib/locationEn'
 import PaywallGate from './PaywallGate'
 
 // cookiesを読むためキャッシュを無効化
 export const dynamic = 'force-dynamic'
-
-const PREFECTURE_EN: Record<string, string> = {
-  '北海道':'Hokkaido','青森県':'Aomori','岩手県':'Iwate','宮城県':'Miyagi',
-  '秋田県':'Akita','山形県':'Yamagata','福島県':'Fukushima','茨城県':'Ibaraki',
-  '栃木県':'Tochigi','群馬県':'Gunma','埼玉県':'Saitama','千葉県':'Chiba',
-  '東京都':'Tokyo','神奈川県':'Kanagawa','新潟県':'Niigata','富山県':'Toyama',
-  '石川県':'Ishikawa','福井県':'Fukui','山梨県':'Yamanashi','長野県':'Nagano',
-  '岐阜県':'Gifu','静岡県':'Shizuoka','愛知県':'Aichi','三重県':'Mie',
-  '滋賀県':'Shiga','京都府':'Kyoto','大阪府':'Osaka','兵庫県':'Hyogo',
-  '奈良県':'Nara','和歌山県':'Wakayama','鳥取県':'Tottori','島根県':'Shimane',
-  '岡山県':'Okayama','広島県':'Hiroshima','山口県':'Yamaguchi','徳島県':'Tokushima',
-  '香川県':'Kagawa','愛媛県':'Ehime','高知県':'Kochi','福岡県':'Fukuoka',
-  '佐賀県':'Saga','長崎県':'Nagasaki','熊本県':'Kumamoto','大分県':'Oita',
-  '宮崎県':'Miyazaki','鹿児島県':'Kagoshima','沖縄県':'Okinawa',
-}
-const CITY_EN: Record<string, string> = {
-  '亀岡市':'Kameoka','安曇野市':'Azumino','軽井沢町':'Karuizawa','那須塩原市':'Nasu Shiobara',
-  '箱根町':'Hakone','日光市':'Nikko','高山市':'Takayama','白川村':'Shirakawa',
-  '飛騨市':'Hida','下呂市':'Gero','松本市':'Matsumoto','諏訪市':'Suwa',
-  '伊那市':'Ina','飯田市':'Iida','飯山市':'Iiyama','妙高市':'Myoko',
-  '美作市':'Mimasaka','津山市':'Tsuyama','真庭市':'Maniwa','瀬戸内市':'Setouchi',
-  '三好市':'Miyoshi','四万十市':'Shimanto','九重町':'Kokonoe','阿蘇市':'Aso',
-  '天草市':'Amakusa','指宿市':'Ibusuki','霧島市':'Kirishima',
-}
-function locationEn(prefecture: string, city?: string): string {
-  const pref = PREFECTURE_EN[prefecture] || prefecture
-  if (!city) return `${pref}, Japan`
-  const cityEn = CITY_EN[city] || city.replace(/[市町村区郡]$/, '')
-  return `${cityEn}, ${pref}, Japan`
-}
 
 async function getProperty(id: string) {
   const { data } = await supabase
