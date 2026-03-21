@@ -134,18 +134,28 @@ export default async function EnPropertyDetailPage({ params }: { params: { id: s
                   ))}
                 </div>
 
-                {p.contact_email && (
+                {p.contact_email ? (
+                  <>
+                    <a
+                      href={`mailto:${p.contact_email}?subject=Inquiry about property: ${title}`}
+                      className="w-full block text-center bg-[#5a3e18] hover:bg-[#3d2b10] text-white font-bold py-3 rounded-xl transition"
+                    >
+                      📧 Contact Owner
+                    </a>
+                    <p className="text-xs text-[#8a7a68] mt-3 text-center">
+                      Direct contact — no agent fees
+                    </p>
+                  </>
+                ) : (
                   <a
-                    href={`mailto:${p.contact_email}?subject=Inquiry about property: ${title}`}
-                    className="w-full block text-center bg-[#5a3e18] hover:bg-[#3d2b10] text-white font-bold py-3 rounded-xl transition"
+                    href={`https://www.google.com/search?q=${encodeURIComponent(p.city + ' ' + p.prefecture + ' 空き家バンク')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full block text-center border-2 border-[#5a3e18] text-[#5a3e18] hover:bg-[#5a3e18] hover:text-white font-bold py-3 rounded-xl transition"
                   >
-                    📧 Contact Owner
+                    🏛 View Municipal Akiya Bank →
                   </a>
                 )}
-
-                <p className="text-xs text-[#8a7a68] mt-3 text-center">
-                  Direct contact — no agent fees
-                </p>
 
                 {/* Manage subscription */}
                 <PaywallGate mode="manage" />
