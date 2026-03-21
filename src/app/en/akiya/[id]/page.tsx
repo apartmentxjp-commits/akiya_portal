@@ -132,7 +132,7 @@ export default async function EnPropertyDetailPage({ params }: { params: { id: s
                     { label: 'Building Area', value: p.building_area ? `${p.building_area} m²` : '—' },
                     { label: 'Land Area', value: p.land_area ? `${p.land_area} m²` : '—' },
                     { label: 'Year Built', value: p.year_built ? `${p.year_built} (${age}yr old)` : '—' },
-                    { label: 'Location', value: `${p.city}, ${p.prefecture}` },
+                    { label: 'Location', value: locationEn(p.prefecture, p.city) },
                   ].map(({ label, value }) => (
                     <div key={label} className="bg-[#f5f0e8] rounded-lg p-3">
                       <div className="text-xs text-[#8a7a68] mb-1">{label}</div>
@@ -166,18 +166,18 @@ export default async function EnPropertyDetailPage({ params }: { params: { id: s
         </div>
 
         {/* Description — only shown to subscribers ──────────────────────── */}
-        {subscribed && description && (
+        {subscribed && (
           <div className="mt-10">
             <h2 className="text-lg font-bold text-[#2c2416] mb-4 border-l-4 border-[#5a3e18] pl-3">Property Details</h2>
-            <div className="text-sm text-[#2c2416] leading-relaxed whitespace-pre-wrap bg-white border border-stone-200 rounded-xl p-6">
-              {description}
-            </div>
-          </div>
-        )}
-
-        {subscribed && !p.description_en && p.description && (
-          <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800">
-            ⚠️ English translation is being generated. Original Japanese description shown above.
+            {p.description_en ? (
+              <div className="text-sm text-[#2c2416] leading-relaxed whitespace-pre-wrap bg-white border border-stone-200 rounded-xl p-6">
+                {p.description_en}
+              </div>
+            ) : (
+              <div className="p-5 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800">
+                ⚠️ English translation is being prepared for this listing. Please check back soon.
+              </div>
+            )}
           </div>
         )}
       </main>
