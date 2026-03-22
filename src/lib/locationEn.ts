@@ -65,6 +65,11 @@ export const CITY_EN: Record<string, string> = {
   '宮崎市':'Miyazaki','都城市':'Miyakonojo','日向市':'Hyuga',
   '鹿児島市':'Kagoshima','霧島市':'Kirishima','指宿市':'Ibusuki',
   '那覇市':'Naha','石垣市':'Ishigaki','宮古島市':'Miyakojima',
+  // 兵庫
+  '三木市':'Miki','三木':'Miki','加西市':'Kasai','加西':'Kasai',
+  '姫路市':'Himeji','加古川市':'Kakogawa','明石市':'Akashi','西脇市':'Nishiwaki',
+  '小野市':'Ono','加東市':'Kato','多可町':'Taka','西宮市':'Nishinomiya',
+  '丹波市':'Tamba','丹波篠山市':'Tanba Sasayama','朝来市':'Asago','養父市':'Yabu',
   // その他よく使われる地名
   '軽井沢町':'Karuizawa','那須塩原市':'Nasu Shiobara','安曇野市':'Azumino',
 }

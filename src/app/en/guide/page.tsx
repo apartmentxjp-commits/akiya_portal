@@ -1,9 +1,13 @@
+'use client'
+
+import { useState } from 'react'
 import { Nav, Footer } from '@/components/Nav'
 import Link from 'next/link'
 
-export const metadata = {
-  title: 'Japan Guides & Ebooks | Akiya Japan',
-  description: 'Expert guides for living, buying, and exploring Japan. Written for foreign buyers and long-stay visitors.',
+const PRICE_IDS: Record<string, string> = {
+  download: 'price_1TDgtv98H8Ai6RPUilNht5uc',  // How to Buy a House — $20
+  regional: 'price_1TDgpd98H8Ai6RPUeLOIiCQJ',  // Japan Regional Living Guide — $15
+  festivals: 'price_1TDgrt98H8Ai6RPUew7FwVPr', // Japan Festival Calendar — $10
 }
 
 const GUIDES = [
@@ -66,6 +70,68 @@ const GUIDES = [
   },
 ]
 
+function BuyButton({ slug, price }: { slug: string; price: number }) {
+  const [email, setEmail] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [showForm, setShowForm] = useState(false)
+  const [err, setErr] = useState<string | null>(null)
+
+  async function handleBuy(e: React.FormEvent) {
+    e.preventDefault()
+    setErr(null)
+    if (!email || !email.includes('@')) {
+      setErr('Enter a valid email')
+      return
+    }
+    setLoading(true)
+    try {
+      const res = await fetch('/api/stripe/checkout-once', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim().toLowerCase(), priceId: PRICE_IDS[slug] }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Checkout failed')
+      window.location.href = data.url
+    } catch (e: unknown) {
+      setErr(e instanceof Error ? e.message : 'Something went wrong')
+      setLoading(false)
+    }
+  }
+
+  if (!showForm) {
+    return (
+      <button
+        onClick={() => setShowForm(true)}
+        className="bg-stone-900 hover:bg-stone-700 text-white font-bold px-4 py-2 rounded-xl text-sm transition"
+      >
+        Buy ${price} →
+      </button>
+    )
+  }
+
+  return (
+    <form onSubmit={handleBuy} className="mt-3 space-y-2">
+      {err && <p className="text-xs text-red-600">{err}</p>}
+      <input
+        type="email"
+        placeholder="your@email.com"
+        value={email}
+        onChange={e => setEmail(e.target.value)}
+        required
+        className="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-stone-400"
+      />
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full bg-stone-900 hover:bg-stone-700 disabled:opacity-60 text-white font-bold py-2 rounded-lg text-sm transition"
+      >
+        {loading ? 'Redirecting…' : `Pay $${price} →`}
+      </button>
+    </form>
+  )
+}
+
 export default function GuidePage() {
   return (
     <>
@@ -81,7 +147,7 @@ export default function GuidePage() {
           </p>
           <div className="mt-6 inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white text-sm px-4 py-2 rounded-full">
             <span className="text-[#e07070] font-bold">★</span>
-            Annual subscribers get <strong>"How to Buy"</strong> free ($20 value) — plus full property access
+            Annual subscribers get <strong>&quot;How to Buy&quot;</strong> free ($20 value) — plus full property access
           </div>
         </div>
       </div>
@@ -157,18 +223,15 @@ export default function GuidePage() {
                           >
                             Preview
                           </Link>
-                          {guide.annualFree ? (
+                          {guide.annualFree && (
                             <Link
                               href="/en/subscribe?plan=annual"
                               className="bg-[#e07070] hover:bg-[#cc5c5c] text-white font-bold px-4 py-2 rounded-xl text-sm transition"
                             >
                               Get Free →
                             </Link>
-                          ) : (
-                            <button className="bg-stone-900 hover:bg-stone-700 text-white font-bold px-4 py-2 rounded-xl text-sm transition">
-                              Buy ${guide.price} →
-                            </button>
                           )}
+                          <BuyButton slug={guide.slug} price={guide.price} />
                         </div>
                       )}
                     </div>
