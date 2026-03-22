@@ -20,7 +20,7 @@ export default function TermsPage() {
           },
           {
             title: '2. Subscription',
-            body: 'Full data access requires a monthly subscription of $7.99 USD. Subscriptions are billed monthly and may be cancelled at any time. Cancellation takes effect at the end of the current billing period. No refunds are provided for partial months.',
+            body: 'Full data access requires a paid subscription. Monthly plan: $7.99 USD/month. Annual plan: $79.99 USD/year (~$6.67/month). Subscriptions are billed on the selected cycle and may be cancelled at any time. Cancellation takes effect at the end of the current billing period. No refunds are provided for partial billing periods.',
           },
           {
             title: '3. Acceptable Use',

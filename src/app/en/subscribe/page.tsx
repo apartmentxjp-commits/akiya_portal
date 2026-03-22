@@ -8,7 +8,7 @@ import { Nav, Footer } from '@/components/Nav'
 const MONTHLY_FEATURES = [
   { icon: '📊', text: 'Full property records — area, age, structure, condition' },
   { icon: '📝', text: 'Complete English-translated descriptions' },
-  { icon: '📋', text: 'Seller contact data for every listing' },
+  { icon: '📋', text: 'Seller contact data where available, or municipal akiya bank links' },
   { icon: '🗺️', text: 'Precise location data' },
   { icon: '🔄', text: 'Weekly database updates across all 47 prefectures' },
   { icon: '🔍', text: 'Advanced filtering by area, price, and property type' },

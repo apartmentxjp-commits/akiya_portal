@@ -72,7 +72,7 @@ export default function LoginPage() {
             <p className="text-xs text-center text-[#8a7a68]">
               Not a subscriber yet?{' '}
               <a href="/en/subscribe" className="text-[#5a3e18] hover:underline font-medium">
-                Subscribe for $20/month →
+                Subscribe for $7.99/month →
               </a>
             </p>
           </form>
