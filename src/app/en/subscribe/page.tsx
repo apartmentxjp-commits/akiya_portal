@@ -25,7 +25,7 @@ function SubscribeContent() {
   const error = searchParams.get('error')
   const returnTo = searchParams.get('return_to') || '/en/akiya'
 
-  const [plan, setPlan] = useState<'annual' | 'monthly'>('annual')
+  const [plan, setPlan] = useState<'annual' | 'monthly'>('monthly')
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [err, setErr] = useState<string | null>(null)
