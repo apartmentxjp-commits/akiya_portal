@@ -121,6 +121,7 @@ export function Footer({ lang = 'ja' }: { lang?: 'ja' | 'en' }) {
                 <li><Link href="/en/about" className="hover:text-stone-800 transition">About</Link></li>
                 <li><Link href="/en/privacy" className="hover:text-stone-800 transition">Privacy Policy</Link></li>
                 <li><Link href="/en/terms" className="hover:text-stone-800 transition">Terms of Service</Link></li>
+                <li><Link href="/tokusho" className="hover:text-stone-800 transition">Tokusho Act Notice</Link></li>
                 <li><Link href="/submit" className="hover:text-stone-800 transition">List a Property</Link></li>
               </ul>
             </div>
@@ -155,6 +156,8 @@ export function Footer({ lang = 'ja' }: { lang?: 'ja' | 'en' }) {
               <ul className="space-y-1">
                 <li><Link href="/akiya" className="hover:text-white/80 transition">データ一覧</Link></li>
                 <li><Link href="/en/subscribe" className="hover:text-white/80 transition">フルアクセス</Link></li>
+                <li><Link href="/tokusho" className="hover:text-white/80 transition">特定商取引法に基づく表記</Link></li>
+                <li><Link href="/en/privacy" className="hover:text-white/80 transition">プライバシーポリシー</Link></li>
               </ul>
             </div>
           </div>
