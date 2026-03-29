@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Noto_Serif_JP, Noto_Sans_JP } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
 
 const serifJP = Noto_Serif_JP({
@@ -24,6 +25,15 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ja" className={`${serifJP.variable} ${sansJP.variable}`}>
+      <head>
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-523EZ36ETW" strategy="afterInteractive" />
+        <Script id="ga4-init" strategy="afterInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-523EZ36ETW');
+        `}</Script>
+      </head>
       <body className="min-h-screen flex flex-col font-sans antialiased">
         {children}
       </body>
