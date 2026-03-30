@@ -35,6 +35,12 @@ export default async function EnPropertyDetailPage({ params }: { params: { id: s
   const age = p.year_built ? new Date().getFullYear() - p.year_built : null
   const priceUsd = p.price ? Math.round(p.price * 10000 / 150) : null
 
+  // 間取り図・成約済み・テキスト入り写真を除外
+  const EXCLUDE_KEYWORDS = ['madori', '間取', 'floor', 'plan', '成約', 'sold', 'map', 'layout', '図面', 'keiyaku']
+  const validImages: string[] = (p.images || []).filter((img: unknown): img is string =>
+    typeof img === 'string' && !EXCLUDE_KEYWORDS.some(kw => img.toLowerCase().includes(kw))
+  )
+
   return (
     <>
       <Nav lang="en" />
@@ -48,11 +54,11 @@ export default async function EnPropertyDetailPage({ params }: { params: { id: s
         <div className="grid md:grid-cols-2 gap-8">
           <div>
             {/* Show actual photo for subscribers; blurred teaser for non-subscribers */}
-            {p.images && p.images.length > 0 ? (
+            {validImages.length > 0 ? (
               <div className="relative rounded-xl overflow-hidden h-72">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={p.images[0]}
+                  src={validImages[0]}
                   alt={title}
                   className={`w-full h-full object-cover transition-all duration-300 ${subscribed ? '' : 'blur-md scale-105'}`}
                 />

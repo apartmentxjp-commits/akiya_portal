@@ -17,7 +17,12 @@ export function PropertyCard({ p, lang = 'ja' }: { p: Property; lang?: 'ja' | 'e
   const typeKey = (p.property_type || 'default') as keyof typeof TYPE_STYLES
   const style = TYPE_STYLES[typeKey] || TYPE_STYLES.default
   const age = p.year_built ? new Date().getFullYear() - p.year_built : null
-  const hasPhoto = p.images && p.images.length > 0 && typeof p.images[0] === 'string'
+  // 間取り図・成約済み・テキスト入り写真を除外するフィルター
+  const EXCLUDE_KEYWORDS = ['madori', '間取', 'floor', 'plan', '成約', 'sold', 'map', 'layout', '図面', 'keiyaku']
+  const isValidPhoto = (url: string) =>
+    !EXCLUDE_KEYWORDS.some(kw => url.toLowerCase().includes(kw))
+  const validImages = (p.images || []).filter((img): img is string => typeof img === 'string' && isValidPhoto(img))
+  const hasPhoto = validImages.length > 0
 
   return (
     <Link
@@ -30,7 +35,7 @@ export function PropertyCard({ p, lang = 'ja' }: { p: Property; lang?: 'ja' | 'e
           /* Real property photo */
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={p.images[0]}
+            src={validImages[0]}
             alt={title}
             className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
