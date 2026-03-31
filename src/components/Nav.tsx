@@ -39,12 +39,6 @@ export function Nav({ lang = 'ja' }: { lang?: 'ja' | 'en' }) {
             >
               Full Access $7.99/mo
             </Link>
-            <Link
-              href="/"
-              className="ml-2 px-3 py-1.5 border border-stone-200 rounded-md text-xs text-stone-500 hover:border-stone-400 transition"
-            >
-              🇯🇵 日本語
-            </Link>
           </nav>
         </div>
       </header>
