@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { Property } from '@/lib/supabase'
+import { locationEn } from '@/lib/locationEn'
 
 const TYPE_STYLES: Record<string, { gradient: string; label: string; labelEn: string; color: string }> = {
   kominka:   { gradient: 'from-amber-800 via-amber-700 to-stone-700',   label: '古民家',   labelEn: 'Kominka',    color: '#c9a96e' },
@@ -79,7 +80,7 @@ export function PropertyCard({ p, lang = 'ja' }: { p: Property; lang?: 'ja' | 'e
         {/* Location - bottom */}
         <div className="absolute bottom-3 left-3 right-3 z-10">
           <p className="text-white text-xs font-medium drop-shadow">
-            📍 {p.prefecture}{p.city ? `, ${p.city}` : ''}
+            📍 {isEn ? locationEn(p.prefecture, p.city) : `${p.prefecture} ${p.city}`}
           </p>
         </div>
       </div>
