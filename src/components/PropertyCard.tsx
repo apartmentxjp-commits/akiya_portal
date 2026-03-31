@@ -80,7 +80,7 @@ export function PropertyCard({ p, lang = 'ja' }: { p: Property; lang?: 'ja' | 'e
         {/* Location - bottom */}
         <div className="absolute bottom-3 left-3 right-3 z-10">
           <p className="text-white text-xs font-medium drop-shadow">
-            📍 {isEn ? locationEn(p.prefecture, p.city) : `${p.prefecture} ${p.city}`}
+            📍 {locationEn(p.prefecture, p.city)}
           </p>
         </div>
       </div>

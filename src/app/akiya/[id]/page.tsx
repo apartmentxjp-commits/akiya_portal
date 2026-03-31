@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { Nav, Footer } from '@/components/Nav'
 import { supabase, PUBLIC_PROPERTY_FIELDS } from '@/lib/supabase'
+import { locationEn } from '@/lib/locationEn'
 
 async function getProperty(id: string) {
   const { data } = await supabase
@@ -46,7 +47,7 @@ export default async function PropertyDetailPage({ params }: { params: { id: str
           {/* Right: Info */}
           <div>
             <h1 className="text-xl font-bold text-[#2c2416] mb-2">{p.title}</h1>
-            <p className="text-[#8a7a68] text-sm mb-4">📍 {p.prefecture} {p.city}</p>
+            <p className="text-[#8a7a68] text-sm mb-4">📍 {locationEn(p.prefecture, p.city)}</p>
 
             {p.price && (
               <div className="text-3xl font-bold text-[#5a3e18] mb-6">
