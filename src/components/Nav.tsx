@@ -118,6 +118,18 @@ export function Footer({ lang = 'ja' }: { lang?: 'ja' | 'en' }) {
                 <li><Link href="/tokusho" className="hover:text-stone-800 transition">Tokusho Act Notice</Link></li>
                 <li><Link href="/submit" className="hover:text-stone-800 transition">List a Property</Link></li>
               </ul>
+              <div className="mt-6 pt-4 border-t border-stone-200">
+                <p className="text-xs text-stone-400 mb-2">Part of</p>
+                <a
+                  href="https://mitorahub.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-semibold text-stone-600 hover:text-stone-900 transition"
+                >
+                  MitoraHub →
+                </a>
+                <p className="text-xs text-stone-400 mt-1">Japan travel, food &amp; culture</p>
+              </div>
             </div>
           </div>
 
@@ -127,7 +139,7 @@ export function Footer({ lang = 'ja' }: { lang?: 'ja' | 'en' }) {
               We do not provide real estate brokerage, agency, advisory, or intermediary services.
               All decisions are made at the user&apos;s own responsibility.
             </p>
-            <p className="text-xs text-stone-400">&copy; {new Date().getFullYear()} Akiya Japan · akiya.tacky-consulting.com</p>
+            <p className="text-xs text-stone-400">&copy; {new Date().getFullYear()} Akiya Japan · akiya.mitorahub.com</p>
           </div>
         </div>
       </footer>
