@@ -132,9 +132,58 @@ function BuyButton({ slug, price }: { slug: string; price: number }) {
   )
 }
 
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://akiya.mitorahub.com/en' },
+    { '@type': 'ListItem', position: 2, name: 'Guides', item: 'https://akiya.mitorahub.com/en/guide' },
+  ],
+}
+
+const guideJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'HowTo',
+      name: 'How to Buy a House in Japan as a Foreigner',
+      description: 'Step-by-step process for foreigners to purchase akiya (vacant houses) in Japan — no Japanese required.',
+      totalTime: 'P3M',
+      estimatedCost: { '@type': 'MonetaryAmount', currency: 'USD', value: '1000' },
+      step: [
+        { '@type': 'HowToStep', position: 1, name: 'Find a property', text: 'Search Japan\'s akiya banks or use an English-language aggregator like Akiya Japan to find vacant properties that match your budget and location preferences.' },
+        { '@type': 'HowToStep', position: 2, name: 'Check legal requirements', text: 'Foreigners can own property in Japan regardless of nationality or visa status. No residency is required. Verify any municipal conditions attached to akiya bank listings.' },
+        { '@type': 'HowToStep', position: 3, name: 'Conduct due diligence', text: 'Inspect the property, check for subsidence, review the land registry (登記簿), confirm boundaries, and assess renovation costs with a local contractor.' },
+        { '@type': 'HowToStep', position: 4, name: 'Complete the purchase', text: 'Sign a purchase agreement through a licensed judicial scrivener (司法書士), pay the purchase price plus acquisition taxes (~3–4%), and register ownership in the land registry.' },
+        { '@type': 'HowToStep', position: 5, name: 'Manage from abroad', text: 'Appoint a local property manager or caretaker. Set up auto-pay for fixed asset tax (固定資産税). Budget for annual maintenance and any required renovation.' },
+      ],
+    },
+    {
+      '@type': 'ItemList',
+      name: 'Japan Guides & Ebooks',
+      description: 'Expert-written guides for foreign buyers and Japan enthusiasts',
+      itemListElement: GUIDES.filter(g => !g.comingSoon).map((g, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: g.title,
+        url: `https://akiya.mitorahub.com/en/guide/${g.slug}`,
+        description: g.desc,
+      })),
+    },
+  ],
+}
+
 export default function GuidePage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(guideJsonLd) }}
+      />
       <Nav lang="en" />
 
       {/* Header */}
