@@ -7,4 +7,4 @@ Disallow: /agent
 Disallow: /admin
 Disallow: /api/
 
-Sitemap: https://akiya.tacky-consulting.com/sitemap.xml
+Sitemap: https://akiya.mitorahub.com/sitemap.xml

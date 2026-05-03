@@ -52,11 +52,35 @@ const SAMPLE_PROPS = [
   { loc: 'Ojiya, Niigata',    price: '$6,500',  photo: 'photo-1578469645742-46cae010e5d4' },
 ]
 
+const webPageJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': 'https://akiya.mitorahub.com/en',
+  url: 'https://akiya.mitorahub.com/en',
+  name: 'Akiya Japan — Buy Vacant Houses in Japan',
+  description: "Browse Japan's largest English akiya database. Thousands of vacant houses from $1,000. Foreigners welcome, no Japanese required.",
+  inLanguage: 'en',
+  isPartOf: { '@id': 'https://akiya.mitorahub.com/#website' },
+  about: {
+    '@type': 'Thing',
+    name: 'Akiya (空き家)',
+    description: 'Vacant houses in rural Japan available for purchase at low prices, often from municipal akiya bank programs',
+  },
+  speakable: {
+    '@type': 'SpeakableSpecification',
+    cssSelector: ['h1', 'h2', '.speakable'],
+  },
+}
+
 export default async function EnHomePage() {
   const properties = await getLatestProperties()
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }}
+      />
       <Nav lang="en" />
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}

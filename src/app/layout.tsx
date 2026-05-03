@@ -25,10 +25,44 @@ export const metadata: Metadata = {
   },
 }
 
+const siteJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': 'https://akiya.mitorahub.com/#website',
+      url: 'https://akiya.mitorahub.com',
+      name: 'Akiya Japan',
+      description: "Japan's English-language platform for buying vacant houses (akiya)",
+      inLanguage: ['en', 'ja'],
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate: 'https://akiya.mitorahub.com/en/akiya?q={search_term_string}',
+        },
+        'query-input': 'required name=search_term_string',
+      },
+    },
+    {
+      '@type': 'Organization',
+      '@id': 'https://akiya.mitorahub.com/#organization',
+      name: 'Akiya Japan',
+      url: 'https://akiya.mitorahub.com',
+      description: 'Aggregator and English translator of Japanese municipal akiya (vacant house) bank listings',
+      areaServed: 'JP',
+    },
+  ],
+}
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ja" className={`${serifJP.variable} ${sansJP.variable}`}>
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
+        />
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-523EZ36ETW" strategy="afterInteractive" />
         <Script id="ga4-init" strategy="afterInteractive">{`
           window.dataLayer = window.dataLayer || [];

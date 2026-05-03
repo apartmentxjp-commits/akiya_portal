@@ -1,5 +1,17 @@
+import type { Metadata } from 'next'
 import { Nav, Footer } from '@/components/Nav'
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'FAQ — Buying Akiya in Japan as a Foreigner | Akiya Japan',
+  description: 'Answers to the most common questions about buying vacant houses (akiya) in Japan as a foreigner — no Japanese required, no residency needed.',
+  alternates: {
+    canonical: 'https://akiya.mitorahub.com/en/faq',
+    languages: {
+      'en': 'https://akiya.mitorahub.com/en/faq',
+    },
+  },
+}
 
 const FAQ_SECTIONS = [
   {
@@ -80,9 +92,28 @@ const FAQ_SECTIONS = [
   },
 ]
 
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQ_SECTIONS.flatMap((s) =>
+    s.items.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: item.a,
+      },
+    }))
+  ),
+}
+
 export default function FaqPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <Nav lang="en" />
 
       {/* Hero */}
