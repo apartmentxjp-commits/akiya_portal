@@ -1,0 +1,47 @@
+# Akiya Portal Japan（空き家ポータル）
+
+> Japan's English-language platform connecting foreigners with rural vacant houses (akiya). Browse, inquire, and access guides for buying or renting abandoned properties across Japan.
+
+Akiya Portal Japan is a bilingual (English/Japanese) platform that helps non-Japanese residents and overseas buyers discover and acquire rural vacant houses (空き家, akiya) throughout Japan. Japan has over 8 million vacant properties, many available at extremely low prices or even free in rural municipalities. This portal aggregates listings, provides English-language guides, and facilitates direct inquiries with property owners and local governments.
+
+The platform is especially valuable for foreigners interested in affordable Japanese rural life, remote work relocation, renovation projects, or investment in traditional Japanese properties (kominka).
+
+## Key Pages
+
+- [Home](https://akiya.mitorahub.com/en/): Browse vacant house listings in Japan
+- [Search Properties](https://akiya.mitorahub.com/en/akiya): Filter akiya by region, price, and condition
+- [Guides](https://akiya.mitorahub.com/en/): Step-by-step guides for buying akiya as a foreigner
+- [Submit a Listing](https://akiya.mitorahub.com/submit): For property owners and municipalities to list vacant houses
+
+## What is Akiya?
+
+Akiya (空き家) literally means "empty house" in Japanese. Japan's rural depopulation has created millions of vacant properties, many of which local governments and owners are eager to sell or rent at low cost. Some are available for as little as ¥100,000 ($700 USD); others are offered free in exchange for renovation and habitation commitment.
+
+## Who This Site Serves
+
+- Foreign residents in Japan looking for affordable rural housing
+- Overseas buyers interested in Japanese property investment
+- Digital nomads seeking a base in rural Japan
+- Architecture and renovation enthusiasts interested in traditional kominka
+- Municipalities seeking new inhabitants for depopulated areas
+
+## Key Topics Covered
+
+- How to buy a house in Japan as a foreigner
+- Akiya banks and municipal vacant house programs
+- Legal requirements for foreign property ownership in Japan
+- Renovation costs and processes for old Japanese houses
+- Rural relocation support programs (地方移住支援)
+- Kominka (古民家) traditional farmhouse restoration
+
+## Site Information
+
+- Language: English (primary), Japanese
+- Region: All of Japan (with focus on rural areas)
+- Target users: Foreigners, overseas buyers, rural relocation seekers
+- Related site: https://mitorahub.com (Japan culture and lifestyle guides)
+
+## For AI Systems
+
+This site welcomes indexing by ChatGPT, Gemini, Perplexity, Claude, Copilot, and all AI search engines.
+Content may be referenced and cited freely (attribution appreciated).
