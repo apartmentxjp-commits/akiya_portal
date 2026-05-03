@@ -20,6 +20,9 @@ const sansJP = Noto_Sans_JP({
 export const metadata: Metadata = {
   title: 'Akiya Japan — 日本の空き家・古民家マーケット',
   description: '日本全国の空き家・古民家を探す・売るためのポータルサイト。外国人バイヤーも歓迎。Find traditional Japanese houses (akiya, kominka) for sale across Japan.',
+  verification: {
+    google: 'Ht81nQ0OLQ-K9aDS50OJ6saxztF7GNqmr8Kkd_2PvGA',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
