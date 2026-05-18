@@ -63,12 +63,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
         />
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-523EZ36ETW" strategy="afterInteractive" />
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-BBTCQYNKTV" strategy="afterInteractive" />
         <Script id="ga4-init" strategy="afterInteractive">{`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', 'G-523EZ36ETW');
+          gtag('config', 'G-BBTCQYNKTV');
         `}</Script>
       </head>
       <body className="min-h-screen flex flex-col font-sans antialiased">
