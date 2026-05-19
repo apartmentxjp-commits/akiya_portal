@@ -27,6 +27,9 @@ export function Nav({ lang = 'ja' }: { lang?: 'ja' | 'en' }) {
             <Link href="/en/faq" className="px-3 py-2 text-stone-600 hover:text-stone-900 transition rounded-md">
               FAQ
             </Link>
+            <Link href="/en/blog" className="px-3 py-2 text-stone-600 hover:text-stone-900 transition rounded-md">
+              Blog
+            </Link>
             <Link
               href="/en/login"
               className="ml-2 px-3 py-2 text-stone-600 hover:text-stone-900 transition rounded-md text-sm"
