@@ -72,6 +72,72 @@ const webPageJsonLd = {
   },
 }
 
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': 'https://akiya.mitorahub.com/#organization',
+  name: 'Akiya Japan',
+  url: 'https://akiya.mitorahub.com/en',
+  logo: 'https://akiya.mitorahub.com/logo.png',
+  description: "Japan's largest English-language database of vacant akiya properties. We help foreigners buy affordable houses in Japan without speaking Japanese.",
+  sameAs: [
+    'https://japanlivingmedia.substack.com',
+  ],
+  areaServed: 'JP',
+  knowsAbout: ['Akiya', 'Japanese real estate', 'Vacant house purchase Japan', 'Foreigner property buying Japan'],
+}
+
+const FAQ_ITEMS = [
+  {
+    q: 'Can foreigners buy property in Japan?',
+    a: 'Yes — Japan imposes no restrictions on foreign ownership of real estate. You can purchase property regardless of nationality, residency status, or even visa type. Both residents and non-residents can legally own real estate in Japan.',
+  },
+  {
+    q: 'What is an akiya?',
+    a: 'Akiya (空き家) means "vacant house" in Japanese. Japan has over 9 million abandoned homes — a growing crisis caused by rural depopulation. Local governments actively encourage foreign buyers to take over these properties, often at very low prices.',
+  },
+  {
+    q: 'How much does an akiya cost?',
+    a: 'Prices vary widely. Some akiya are listed for as little as $1,000–$10,000 USD, especially in rural areas. Most properties on our platform range from $5,000 to $150,000. Location, condition, and land size are the main price drivers.',
+  },
+  {
+    q: 'Do I need to speak Japanese to buy a house in Japan?',
+    a: 'No. While the purchase process involves Japanese paperwork, you can work with a bilingual real estate agent or use a professional translation service. Our platform provides all listings in English, and our free guide covers the full process step by step.',
+  },
+  {
+    q: 'What is an akiya bank?',
+    a: 'An akiya bank (空き家バンク) is a municipal property registry run by local governments to connect vacant home owners with prospective buyers. Over 1,800 cities and towns across Japan operate their own akiya banks. We aggregate listings from all of them into one English database.',
+  },
+  {
+    q: 'Can I buy property in Japan on a tourist visa?',
+    a: 'Yes. Japan does not require permanent residency or a long-term visa to purchase real estate. You can sign contracts and complete a purchase while on a standard tourist visa. However, you will need a Japanese bank account or a trusted local agent to handle payments.',
+  },
+  {
+    q: 'What is a kominka?',
+    a: 'A kominka (古民家) is a traditional old Japanese farmhouse, typically built before the 1950s using wood and clay. Many akiya are kominka. They require more renovation but are architecturally unique and culturally significant. Some subsidies are available for kominka restoration.',
+  },
+  {
+    q: 'How long does the akiya buying process take?',
+    a: 'Typically 1–3 months from finding a property to closing. The process involves: property inspection, making an offer, signing a purchase agreement, transferring funds, and registering ownership. Non-residents may need slightly longer due to documentation requirements.',
+  },
+]
+
+const faqPageJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  '@id': 'https://akiya.mitorahub.com/en#faq',
+  url: 'https://akiya.mitorahub.com/en',
+  name: 'Frequently Asked Questions — Buying Akiya in Japan',
+  mainEntity: FAQ_ITEMS.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: a,
+    },
+  })),
+}
+
 export default async function EnHomePage() {
   const properties = await getLatestProperties()
 
@@ -80,6 +146,14 @@ export default async function EnHomePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageJsonLd) }}
       />
       <Nav lang="en" />
 
@@ -365,8 +439,44 @@ export default async function EnHomePage() {
         </div>
       </section>
 
+      {/* ── FAQ ──────────────────────────────────────────────────────────── */}
+      <section id="faq" className="bg-white py-20">
+        <div className="max-w-3xl mx-auto px-6">
+          <h2 className="text-3xl font-bold text-stone-800 text-center mb-3">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-stone-500 text-sm text-center mb-12">
+            Everything you need to know about buying an akiya in Japan as a foreigner
+          </p>
+          <div className="space-y-4">
+            {FAQ_ITEMS.map(({ q, a }, i) => (
+              <details
+                key={i}
+                className="group border border-stone-200 rounded-xl overflow-hidden"
+              >
+                <summary className="flex items-center justify-between gap-4 px-6 py-4 cursor-pointer list-none select-none hover:bg-[#fdf6f6] transition-colors">
+                  <span className="font-semibold text-stone-800 text-sm leading-snug">{q}</span>
+                  <span className="flex-shrink-0 w-6 h-6 bg-[#e07070]/10 text-[#e07070] rounded-full flex items-center justify-center text-xs font-bold group-open:rotate-45 transition-transform duration-200">
+                    +
+                  </span>
+                </summary>
+                <div className="px-6 pb-5 pt-2 text-stone-600 text-sm leading-relaxed border-t border-stone-100">
+                  {a}
+                </div>
+              </details>
+            ))}
+          </div>
+          <p className="text-center text-stone-500 text-sm mt-10">
+            More questions?{' '}
+            <Link href="/en/faq" className="text-[#e07070] hover:text-[#cc5c5c] font-semibold transition">
+              Read the full FAQ →
+            </Link>
+          </p>
+        </div>
+      </section>
+
       {/* ── Final CTA ────────────────────────────────────────────────────── */}
-      <section className="bg-white py-14">
+      <section className="bg-[#f9f9f9] py-14">
         <div className="max-w-xl mx-auto px-6 text-center">
           <h2 className="text-2xl font-bold text-stone-800 mb-5">Subscribe Now</h2>
           <Link
