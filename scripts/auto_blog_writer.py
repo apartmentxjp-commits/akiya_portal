@@ -27,7 +27,7 @@ LOG_FILE = ROOT / "logs" / "auto_blog.log"
 LOG_FILE.parent.mkdir(exist_ok=True)
 
 # APIキーは環境変数または openclaw_seo/.env から読み込む
-_ENV_FILE = Path(__file__).resolve().parent.parent.parent.parent / "openclaw_seo" / ".env"
+_ENV_FILE = Path(__file__).resolve().parent.parent.parent / "openclaw_seo" / ".env"
 if _ENV_FILE.exists():
     for _line in _ENV_FILE.read_text().splitlines():
         if '=' in _line and not _line.startswith('#'):
@@ -50,7 +50,7 @@ FREE_MODELS = [
     "meta-llama/llama-3.3-70b-instruct:free",
     "google/gemma-2-9b-it:free",
 ]
-GROQ_MODELS = ["llama-3.3-70b-versatile", "llama3-70b-8192", "gemma2-9b-it"]
+GROQ_MODELS = ["llama-3.3-70b-versatile", "llama-3.1-70b-versatile", "llama-3.1-8b-instant", "mixtral-8x7b-32768"]
 
 # ──────────────────────────────────────────────
 # 記事トピック一覧
@@ -152,6 +152,167 @@ TOPICS = [
         "tags": ["mortgage", "financing", "bank loan", "Japan property finance"],
         "keyword": "Japan property mortgage foreigner",
     },
+    # ── ロングテール・ニッチキーワード拡充 ──
+    {
+        "slug": "akiya-under-1-million-yen",
+        "title": "Akiya Under ¥1 Million Yen: Are These Properties Real — and Worth It?",
+        "description": "A realistic look at Japanese properties listed under ¥1 million — what hidden costs to expect, which regions offer them, and whether they make financial sense.",
+        "category": "Buying Guide",
+        "tags": ["cheap akiya", "1 million yen", "budget property", "Japan bargain"],
+        "keyword": "akiya under 1 million yen Japan",
+    },
+    {
+        "slug": "free-akiya-japan-zero-yen",
+        "title": "Free Akiya in Japan: Which Municipalities Offer Zero-Yen Properties?",
+        "description": "Some Japanese towns offer vacant houses for free to attract new residents. Here's which cities actually do it, the real conditions, and how to apply.",
+        "category": "Buying Guide",
+        "tags": ["free akiya", "zero yen", "free house Japan", "move to Japan"],
+        "keyword": "free house Japan zero yen akiya",
+    },
+    {
+        "slug": "akiya-digital-nomad-remote-work",
+        "title": "Using an Akiya as a Digital Nomad Base in Japan: What You Need to Know",
+        "description": "Can you buy a cheap house in rural Japan and use it as your remote work headquarters? A practical guide for location-independent workers.",
+        "category": "Lifestyle",
+        "tags": ["digital nomad", "remote work", "Japan base", "nomad visa"],
+        "keyword": "akiya Japan digital nomad remote work",
+    },
+    {
+        "slug": "akiya-nagano-mountains",
+        "title": "Buying Akiya in Nagano: Mountain Life, Ski Resorts, and Property Prices",
+        "description": "Nagano prefecture has some of Japan's most affordable akiya near world-class ski resorts. Prices, buying process, and lifestyle breakdown.",
+        "category": "Regional Guide",
+        "tags": ["Nagano", "mountain akiya", "ski resort", "Alps Japan"],
+        "keyword": "akiya Nagano mountain Japan buy",
+    },
+    {
+        "slug": "akiya-kyushu-warm-climate",
+        "title": "Akiya in Kyushu: Warm Climate, Low Prices, and a Growing Expat Scene",
+        "description": "Fukuoka, Oita, Kumamoto — Kyushu's prefectures offer cheap vacant houses with a mild climate and access to one of Japan's fastest-growing cities.",
+        "category": "Regional Guide",
+        "tags": ["Kyushu", "Fukuoka", "Oita", "warm Japan"],
+        "keyword": "akiya Kyushu cheap property Japan",
+    },
+    {
+        "slug": "akiya-vs-new-build-japan",
+        "title": "Akiya vs. New Build in Japan: Which Is the Smarter Buy for Foreigners?",
+        "description": "A data-driven comparison of buying an old akiya vs a new construction in Japan — total cost, depreciation, renovation complexity, and resale value.",
+        "category": "Buying Guide",
+        "tags": ["new build", "new construction", "comparison", "Japan property"],
+        "keyword": "akiya vs new house Japan buy comparison",
+    },
+    {
+        "slug": "akiya-inheritance-problem-japan",
+        "title": "Japan's Akiya Inheritance Crisis: Why Millions of Houses Have No Owner",
+        "description": "Why Japan has 8.5 million vacant homes — inheritance laws, aging population, and rural exodus. Understanding the problem helps buyers find opportunities.",
+        "category": "Market Research",
+        "tags": ["inheritance", "vacant house crisis", "Japan demographics", "market"],
+        "keyword": "Japan akiya inheritance vacant house problem",
+    },
+    {
+        "slug": "akiya-tiny-house-japan",
+        "title": "Tiny Houses and Akiya in Japan: The Minimalist Living Trend Taking Off",
+        "description": "Japanese compact architecture + cheap akiya = the ultimate minimalist lifestyle. How tiny house principles apply to renovating a Japanese vacant home.",
+        "category": "Renovation",
+        "tags": ["tiny house", "minimalism", "compact living", "Japan renovation"],
+        "keyword": "tiny house Japan akiya minimalist living",
+    },
+    {
+        "slug": "akiya-pension-retirement-japan",
+        "title": "Retiring to Japan with an Akiya: The Real Cost of a Japanese Country Life",
+        "description": "Many retirees dream of cheap rural Japan. Here's an honest breakdown of retirement costs — healthcare, visa, pension income, and property maintenance.",
+        "category": "Lifestyle",
+        "tags": ["retirement", "retire Japan", "pension", "expat retirement"],
+        "keyword": "retire Japan cheap akiya lifestyle cost",
+    },
+    {
+        "slug": "akiya-hokkaido-cold-climate",
+        "title": "Buying Akiya in Hokkaido: What You Must Know About Cold Climate Properties",
+        "description": "Hokkaido has stunning landscapes and dirt-cheap houses — but winters are brutal. A guide to heating costs, insulation upgrades, and what makes Hokkaido akiya unique.",
+        "category": "Regional Guide",
+        "tags": ["Hokkaido", "cold climate", "heating", "snow country"],
+        "keyword": "akiya Hokkaido cold winter Japan buy",
+    },
+    {
+        "slug": "akiya-seashore-coastal-japan",
+        "title": "Coastal Akiya in Japan: Ocean Views for Under ¥3 Million",
+        "description": "From Shonan to Shikoku, Japan's coastlines hide incredibly affordable vacant houses. How to find ocean-view properties and what coastal ownership actually costs.",
+        "category": "Regional Guide",
+        "tags": ["coastal", "ocean view", "beach house", "Shikoku", "Shonan"],
+        "keyword": "coastal akiya Japan ocean view cheap",
+    },
+    {
+        "slug": "akiya-manga-anime-town-tourism",
+        "title": "Japan's Anime and Pop Culture Towns: Can You Buy an Akiya There?",
+        "description": "Towns like Koenji, Akihabara-area suburbs, and manga-themed rural cities attract enthusiasts. Here's what property looks like in Japan's otaku destinations.",
+        "category": "Lifestyle",
+        "tags": ["anime", "manga", "otaku", "pop culture Japan", "Tokyo suburbs"],
+        "keyword": "akiya Japan anime town buy property",
+    },
+    {
+        "slug": "japan-akiya-bank-english-guide",
+        "title": "Japan Akiya Bank in English: How to Use Municipal Portals Without Speaking Japanese",
+        "description": "Step-by-step guide to navigating Japanese municipal akiya bank websites using translation tools, our English summaries, and direct contact templates.",
+        "category": "Buying Guide",
+        "tags": ["akiya bank", "English guide", "translation", "municipal portal"],
+        "keyword": "Japan akiya bank English no Japanese",
+    },
+    {
+        "slug": "minka-traditional-architecture-buy",
+        "title": "Minka Traditional Architecture: A Buyer's Guide to Japan's Historic Farm Houses",
+        "description": "Minka are Japan's centuries-old wooden farmhouses — different from modern akiya in structure, heritage value, and renovation requirements. Here's what to know.",
+        "category": "Buying Guide",
+        "tags": ["minka", "traditional architecture", "farmhouse", "historic property"],
+        "keyword": "minka traditional house Japan buy guide",
+    },
+    {
+        "slug": "akiya-solo-renovator-diy-japan",
+        "title": "DIY Akiya Renovation in Japan: Can You Do It Yourself as a Foreigner?",
+        "description": "Japan allows owner-builders to do most renovation work themselves. What's legal, what requires a licensed contractor, and how DIY can cut costs by 60%.",
+        "category": "Renovation",
+        "tags": ["DIY", "self-renovation", "owner-builder", "Japan permit"],
+        "keyword": "DIY akiya renovation Japan foreigner yourself",
+    },
+    {
+        "slug": "akiya-shikoku-pilgrimage-towns",
+        "title": "Akiya Along the Shikoku 88-Temple Pilgrimage: Buy Near Japan's Sacred Trail",
+        "description": "The Shikoku pilgrimage route passes through towns with astonishingly cheap vacant houses. A guide to property near Japan's most famous spiritual walk.",
+        "category": "Regional Guide",
+        "tags": ["Shikoku", "pilgrimage", "Ohenro", "spiritual Japan"],
+        "keyword": "akiya Shikoku pilgrimage property Japan",
+    },
+    {
+        "slug": "japan-property-lawyer-notary-guide",
+        "title": "Do You Need a Lawyer to Buy Akiya in Japan? Notaries, Agents, and Legal Help",
+        "description": "Japanese property transactions use judicial scriveners (shiho shoshi), not lawyers. What each professional does, costs, and whether you need an English-speaker.",
+        "category": "Legal Guide",
+        "tags": ["lawyer", "notary", "shiho shoshi", "legal help Japan"],
+        "keyword": "lawyer notary buy property Japan foreigner",
+    },
+    {
+        "slug": "akiya-earthquake-safety-seismic",
+        "title": "Akiya Earthquake Safety: How to Check Seismic Standards Before You Buy",
+        "description": "Japan's 1981 seismic code change is critical for akiya buyers. Pre-1981 buildings may need expensive structural reinforcement. Here's how to assess and upgrade.",
+        "category": "Renovation",
+        "tags": ["earthquake", "seismic", "safety", "building code", "1981"],
+        "keyword": "akiya earthquake safety seismic Japan buy",
+    },
+    {
+        "slug": "akiya-community-integration-foreigners",
+        "title": "Joining a Rural Japanese Community as a Foreign Akiya Owner: Honest Tips",
+        "description": "Buying an akiya means joining a tight-knit village. Neighborhood associations, seasonal duties, cultural expectations, and how foreigners make it work.",
+        "category": "Lifestyle",
+        "tags": ["community", "rural Japan", "neighborhood", "chonaikai", "integration"],
+        "keyword": "rural Japan community foreigner akiya integration",
+    },
+    {
+        "slug": "akiya-water-well-septic-rural",
+        "title": "Akiya with Well Water and Septic Systems: What Rural Utilities Really Cost",
+        "description": "Many rural akiya aren't on city water or sewer. A frank guide to well water quality testing, septic maintenance, and what happens when these systems fail.",
+        "category": "Renovation",
+        "tags": ["well water", "septic", "rural utilities", "infrastructure"],
+        "keyword": "akiya well water septic rural Japan cost",
+    },
 ]
 
 
@@ -168,87 +329,82 @@ def get_posted_slugs() -> set:
 
 
 def call_openrouter(prompt: str) -> str:
-    import urllib.request
+    """OpenRouter APIで記事生成する（requestsライブラリ使用）"""
+    try:
+        import requests as _req
+    except ImportError:
+        return ""
     for model in FREE_MODELS:
         try:
-            payload = json.dumps({
-                "model": model,
-                "messages": [{"role": "user", "content": prompt}],
-                "max_tokens": 3000,
-            }).encode()
-            req = urllib.request.Request(
-                OPENROUTER_URL,
-                data=payload,
-                headers={
-                    "Authorization": f"Bearer {OPENROUTER_API_KEY}",
-                    "Content-Type": "application/json",
-                    "HTTP-Referer": "https://akiya.mitorahub.com",
-                },
-                method="POST",
-            )
-            with urllib.request.urlopen(req, timeout=60) as resp:
-                data = json.loads(resp.read())
-                text = data["choices"][0]["message"]["content"]
+            r = _req.post(OPENROUTER_URL,
+                headers={"Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                         "Content-Type": "application/json",
+                         "HTTP-Referer": "https://akiya.mitorahub.com"},
+                json={"model": model, "messages": [{"role": "user", "content": prompt}], "max_tokens": 3000},
+                timeout=60)
+            if r.status_code == 200:
+                text = r.json()["choices"][0]["message"]["content"]
                 if text and len(text) > 200:
                     log(f"  OpenRouter成功 ({model}): {len(text)}文字")
                     return text
+            else:
+                log(f"  OpenRouter失敗 ({model}): HTTP {r.status_code}")
         except Exception as e:
             log(f"  OpenRouter失敗 ({model}): {e}")
-            time.sleep(2)
+        time.sleep(2)
     return ""
 
 
 def call_groq(prompt: str) -> str:
-    import urllib.request
-    for key in [GROQ_API_KEY, GROQ_API_KEY_2]:
+    """Groq APIで記事生成する（requestsライブラリ使用）"""
+    try:
+        import requests as _req
+    except ImportError:
+        return ""
+    for key in [k for k in [GROQ_API_KEY, GROQ_API_KEY_2] if k]:
         for model in GROQ_MODELS:
             try:
-                payload = json.dumps({
-                    "model": model,
-                    "messages": [{"role": "user", "content": prompt}],
-                    "max_tokens": 3000,
-                }).encode()
-                req = urllib.request.Request(
-                    GROQ_URL,
-                    data=payload,
-                    headers={
-                        "Authorization": f"Bearer {key}",
-                        "Content-Type": "application/json",
-                    },
-                    method="POST",
-                )
-                with urllib.request.urlopen(req, timeout=60) as resp:
-                    data = json.loads(resp.read())
-                    text = data["choices"][0]["message"]["content"]
+                r = _req.post(GROQ_URL,
+                    headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+                    json={"model": model, "messages": [{"role": "user", "content": prompt}], "max_tokens": 3000},
+                    timeout=60)
+                if r.status_code == 200:
+                    text = r.json()["choices"][0]["message"]["content"]
                     if text and len(text) > 200:
                         log(f"  Groq成功 ({model}): {len(text)}文字")
                         return text
+                else:
+                    log(f"  Groq失敗 ({model}): HTTP {r.status_code}")
             except Exception as e:
                 log(f"  Groq失敗 ({model}): {e}")
-                time.sleep(2)
+            time.sleep(2)
     return ""
 
 
 def call_gemini(prompt: str) -> str:
-    """Gemini APIで記事生成する"""
-    import urllib.request
+    """Gemini APIで記事生成する（requestsライブラリ使用）"""
+    try:
+        import requests as _req
+    except ImportError:
+        return ""
     for model in GEMINI_MODELS:
         try:
             url = f"{GEMINI_BASE_URL}/{model}:generateContent?key={GEMINI_API_KEY}"
-            payload = json.dumps({
-                "contents": [{"parts": [{"text": prompt}]}],
-                "generationConfig": {"maxOutputTokens": 3000, "temperature": 0.7},
-            }).encode()
-            req = urllib.request.Request(url, data=payload, headers={"Content-Type": "application/json"}, method="POST")
-            with urllib.request.urlopen(req, timeout=90) as resp:
-                data = json.loads(resp.read())
-                text = data["candidates"][0]["content"]["parts"][0]["text"]
+            r = _req.post(url,
+                headers={"Content-Type": "application/json"},
+                json={"contents": [{"parts": [{"text": prompt}]}],
+                      "generationConfig": {"maxOutputTokens": 3000, "temperature": 0.7}},
+                timeout=90)
+            if r.status_code == 200:
+                text = r.json()["candidates"][0]["content"]["parts"][0]["text"]
                 if text and len(text) > 200:
                     log(f"  Gemini成功 ({model}): {len(text)}文字")
                     return text
+            else:
+                log(f"  Gemini失敗 ({model}): HTTP {r.status_code}")
         except Exception as e:
             log(f"  Gemini失敗 ({model}): {e}")
-            time.sleep(2)
+        time.sleep(2)
     return ""
 
 
