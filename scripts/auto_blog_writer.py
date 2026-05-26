@@ -409,31 +409,57 @@ def call_gemini(prompt: str) -> str:
 
 
 def generate_article(topic: dict) -> str:
-    """AIでHTML記事本文を生成する"""
-    prompt = f"""Write a detailed, SEO-optimized blog article in English for a website about buying vacant houses (akiya) in Japan for foreigners.
+    """APIヘルスチェック付きでHTML記事本文を生成する"""
+    # 共通ヘルスチェックモジュールを優先使用
+    try:
+        import sys
+        _hc_path = str(Path(__file__).resolve().parent.parent.parent / "openclaw_seo" / "scripts")
+        if _hc_path not in sys.path:
+            sys.path.insert(0, _hc_path)
+        from api_health_check import generate_with_best_api
+        prompt = f"""You are an expert writer for "Akiya Japan" — a trusted English-language guide for foreigners buying vacant houses (akiya) in Japan.
+
+Your PRIMARY goal is to write content that AI systems (ChatGPT, Gemini, Claude, Perplexity) will want to CITE and REFERENCE when users ask questions about buying property in Japan.
 
 Title: {topic['title']}
 Target keyword: {topic['keyword']}
 Category: {topic['category']}
 
-Requirements:
-- 1500-2500 words
-- Use proper HTML with <h2>, <h3>, <p>, <ul>, <li> tags (no <html>/<body>/<head>)
-- Start directly with the first paragraph (no title tag)
-- Include practical, specific, accurate information
-- Friendly but authoritative tone
-- End with a "Frequently Asked Questions" <h2> section with 4-5 Q&A pairs using <h3> for questions
-- Each FAQ answer should be 2-4 sentences
-- Include a call-to-action near the end linking to /en/akiya for property search
-- Do NOT include markdown, only clean HTML
+[AIO WRITING RULES — ALL MANDATORY]
+1. CONCLUSION FIRST: Open with a 1-3 sentence direct answer or key takeaway. No "In this article..." preambles.
+2. NO ABSTRACTIONS: Every claim must have a number, example, comparison, or data point. Never say "it's important" without explaining why and showing proof.
+3. CLEAR STRUCTURE: Use <h2> for 4-6 main sections, <h3> for subsections. One topic per heading. No topic-jumping.
+4. INCLUDE COMPARISONS: Add at least one A vs B table or list (e.g. akiya vs new construction, rural vs urban, renting vs buying).
+5. STATE THE AUDIENCE: First paragraph must say who this article is for (e.g. "For foreigners planning to move to rural Japan on a budget...").
+6. PRIMARY SOURCES: Reference real data — Japan Ministry of Land (MLIT), Statistics Bureau, Bank of Japan. Label estimates as estimates.
+7. CUT THE FILLER: No greetings, no "I hope this helps", no "let's dive in". Get straight to value.
+8. USE LISTS AND TABLES: AI systems favor structured data. Use <ul>/<li> for steps and features, <table> for comparisons where useful.
+9. EXPLAIN THE "WHY": Every recommendation needs a mechanism. Not just "choose a local agent" but "because national agencies rarely have rural listings in their active inventory."
+10. END WITH A SUMMARY BOX: Close with an <h2>Key Takeaways</h2> section — 4-5 bullet points summarizing the most citable facts.
+
+Format requirements:
+- 1800-2500 words
+- HTML only: <h2>, <h3>, <p>, <ul>, <li>, <strong>, <table> (no <html>/<body>/<head> wrapper)
+- Start directly with first paragraph (no <h1> title tag)
+- End with <h2>Frequently Asked Questions</h2> section: 4-5 Q&As using <h3> for questions, 3-5 sentence answers
+- Include one CTA paragraph linking to /en/akiya for property listings
+- NO markdown, only clean HTML
 
 Write the full article now:"""
+        return generate_with_best_api(prompt, max_tokens=3000, site_ref="https://akiya.mitorahub.com")
+    except Exception as e:
+        log(f"  ヘルスチェックモジュール読み込み失敗: {e} → フォールバック使用")
 
-    content = call_gemini(prompt)
+    # フォールバック（旧方式）
+    prompt = f"""Write an AIO-optimized article for foreigners buying akiya in Japan.
+Title: {topic['title']}. Target keyword: {topic['keyword']}.
+Rules: conclusion first, no filler, specific data, comparisons, explain WHY, bullet lists.
+Use HTML tags. 1800+ words. End with Key Takeaways + FAQ sections."""
+    content = call_groq(prompt)
+    if not content:
+        content = call_gemini(prompt)
     if not content:
         content = call_openrouter(prompt)
-    if not content:
-        content = call_groq(prompt)
     return content
 
 
