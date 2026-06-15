@@ -6,7 +6,7 @@ Akiya Japan ブログ自動記事生成スクリプト
 Vercelが自動デプロイする
 
 実行: python3 auto_blog_writer.py --count 2
-Cron: 0 8 * * * cd ~/Desktop/akiya_portal && python3 scripts/auto_blog_writer.py --count 2
+Cron: 30 8 * * * cd ~/Desktop/akiya_portal && python3 scripts/auto_blog_writer.py --count 2
 """
 import os
 import re
@@ -522,11 +522,13 @@ def git_push(slugs: list):
         subprocess.run(["git", "-C", str(ROOT), "commit", "-m", msg], check=True)
         subprocess.run(["git", "-C", str(ROOT), "push", "origin", "main"], check=True)
         log(f"✅ Git push完了: {slugs}")
+        return True
     except subprocess.CalledProcessError as e:
         log(f"❌ Git push失敗: {e}")
+        return False
 
 
-def run(count: int = 2):
+def run(count: int = 2, no_push: bool = False):
     posted = get_posted_slugs()
     remaining = [t for t in TOPICS if t["slug"] not in posted]
 
@@ -547,15 +549,23 @@ def run(count: int = 2):
         generated.append(topic["slug"])
         time.sleep(3)
 
-    if generated:
-        git_push(generated)
-        log(f"\n✅ 完了: {len(generated)}記事をGitHubにプッシュしました")
+    if generated and no_push:
+        log(f"\n✅ 完了: {len(generated)}記事を生成しました（--no-push のためGitHubプッシュなし）")
+    elif generated:
+        pushed = git_push(generated)
+        if pushed:
+            log(f"\n✅ 完了: {len(generated)}記事をGitHubにプッシュしました")
+        else:
+            log(f"\n⚠️ 生成は完了しましたが、GitHubへのプッシュに失敗しました: {generated}")
+            raise SystemExit(1)
     else:
         log("❌ 記事生成なし")
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--count", type=int, default=2, help="生成する記事数")
+    parser.add_argument("--no-push", action="store_true", help="記事生成のみ行い、git commit/pushは行わない")
     args = parser.parse_args()
-    run(args.count)
+    run(args.count, no_push=args.no_push)
